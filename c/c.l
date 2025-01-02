@@ -18,11 +18,11 @@ STR \"[^\"]*\"
 %}
 %%
 
-int|void|while|if|else|return {printf("<%s>", yytext);} 
-"+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}"  {printf("<%s>", yytext);} 
-{ID}+ {printf("<id, %s>", yytext);}
-{STR} {printf("<str, %s>", yytext);}
-{digit} {printf("<num, %s>", yytext);}
+int|void|while|if|else|return {fprintf(out,"<%s> ", yytext);} 
+"+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}"  {fprintf(out,"<%s> ", yytext);} 
+{ID}+ {fprintf(out,"<id, %s> ", yytext);}
+{STR} {fprintf(out,"<str, %s> ", yytext);}
+{digit} {fprintf(out,"<num, %s> ", yytext);}
 
 %%
 int main(int argc, char *argv[]){

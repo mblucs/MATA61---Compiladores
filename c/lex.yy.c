@@ -764,28 +764,28 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 21 "c.l"
-{printf("<%s> ", yytext);} 
+{fprintf(out,"<%s>", yytext);} 
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 22 "c.l"
-{printf("<%s> ", yytext);} 
+{fprintf(out,"<%s>", yytext);} 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 23 "c.l"
-{printf("<id, %s> ", yytext);}
+{fprintf(out,"<id, %s>", yytext);}
 	YY_BREAK
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
 #line 24 "c.l"
-{printf("<str, %s> ", yytext);}
+{fprintf(out,"<str, %s>", yytext);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 25 "c.l"
-{printf("<num, %s> ", yytext);}
+{fprintf(out,"<num, %s>", yytext);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
