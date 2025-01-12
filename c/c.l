@@ -1,12 +1,13 @@
 %option noyywrap
 
-digit[0-9]
-letter[a-zA-Z]
+NUM[0-9]
 ID[a-zA-Z][a-zA-Z0-9]*
-WHITESPACE[ ]
 NEWLINE[\n]
-TAB[\t]
 STR \"[^\"]*\"
+
+TAB[\t]
+CHAR[a-zA-Z]
+WHITESPACE[ ]
 
 %{
   #include<string>
@@ -25,7 +26,7 @@ int|void|while|if|else|return {fprintf(out,"(%d, KEY, %s) \n", yylineno, yytext)
 "+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}"  {fprintf(out,"(%d, SYM, \"%s\")\n", yylineno, yytext);} 
 {ID}+ {fprintf(out,"(%d, ID, %s) \n",yylineno, yytext);}
 {STR} {fprintf(out,"(%d, STR, %s)\n",yylineno, yytext);}
-{digit} {fprintf(out,"(%d, NUM, %s) \n",yylineno, yytext);}
+{NUM} {fprintf(out,"(%d, NUM, %s) \n",yylineno, yytext);}
 
 %%
 int main(int argc, char *argv[]){
