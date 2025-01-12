@@ -4,25 +4,28 @@ digit[0-9]
 letter[a-zA-Z]
 ID[a-zA-Z][a-zA-Z0-9]*
 WHITESPACE[ ]
-quebra[\n]
+NEWLINE[\n]
 TAB[\t]
 STR \"[^\"]*\"
 
 %{
-    #define YY_DECL extern "C" int yylex()
-    #include<string>
-    #include<iostream>
-    using namespace std;
-    FILE *out ;
+  #include<string>
+  #include<iostream>
+  using namespace std;
+  FILE *out ;
 	int linha;
 %}
+%option yylineno
+
 %%
 
-int|void|while|if|else|return {fprintf(out,"<%s> ", yytext);} 
-"+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}"  {fprintf(out,"<%s> ", yytext);} 
-{ID}+ {fprintf(out,"<id, %s> ", yytext);}
-{STR} {fprintf(out,"<str, %s> ", yytext);}
-{digit} {fprintf(out,"<num, %s> ", yytext);}
+{NEWLINE}
+
+int|void|while|if|else|return {fprintf(out,"(%d, KEY, %s) \n", yylineno, yytext);} 
+"+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}"  {fprintf(out,"(%d, SYM, \"%s\")\n", yylineno, yytext);} 
+{ID}+ {fprintf(out,"(%d, ID, %s) \n",yylineno, yytext);}
+{STR} {fprintf(out,"(%d, STR, %s)\n",yylineno, yytext);}
+{digit} {fprintf(out,"(%d, NUM, %s) \n",yylineno, yytext);}
 
 %%
 int main(int argc, char *argv[]){
