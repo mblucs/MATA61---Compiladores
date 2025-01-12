@@ -384,10 +384,10 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[38] =
     {   0,
-        0,    0,    8,    7,    1,    7,    7,    3,    6,    3,
-        3,    3,    4,    4,    4,    4,    4,    4,    3,    0,
-        5,    4,    4,    4,    2,    4,    4,    4,    4,    4,
-        4,    4,    4,    4,    4,    4,    0
+        0,    0,    8,    7,    1,    7,    7,    3,    5,    3,
+        3,    3,    6,    6,    6,    6,    6,    6,    3,    0,
+        4,    6,    6,    6,    2,    6,    6,    6,    6,    6,
+        6,    6,    6,    6,    6,    6,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -483,7 +483,7 @@ static const flex_int16_t yy_chk[121] =
 /* Table of booleans, true if rule could match eol. */
 static const flex_int32_t yy_rule_can_match_eol[8] =
     {   0,
-1, 0, 0, 0, 1, 0, 0,     };
+1, 0, 0, 1, 0, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -500,14 +500,24 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "c.l"
-#line 12 "c.l"
+#line 13 "c.l"
   #include<string>
   #include<iostream>
+  #include <vector>
+
+  #define TABLE_LENGTH 50 // Número máximo de palavras na tabela
+  
   using namespace std;
+
   FILE *out ;
 	int linha;
-#line 510 "lex.yy.c"
-#line 511 "lex.yy.c"
+
+  // Tabela de símbolos
+  vector<string> symbolTable;
+  int getOrAddSymbol(string id);
+
+#line 520 "lex.yy.c"
+#line 521 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -724,10 +734,10 @@ YY_DECL
 		}
 
 	{
-#line 20 "c.l"
+#line 31 "c.l"
 
 
-#line 731 "lex.yy.c"
+#line 741 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -797,41 +807,45 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 22 "c.l"
+#line 33 "c.l"
 
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 24 "c.l"
+#line 34 "c.l"
 {fprintf(out,"(%d, KEY, %s) \n", yylineno, yytext);} 
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 25 "c.l"
+#line 35 "c.l"
 {fprintf(out,"(%d, SYM, \"%s\")\n", yylineno, yytext);} 
 	YY_BREAK
 case 4:
+/* rule 4 can match eol */
 YY_RULE_SETUP
-#line 26 "c.l"
-{fprintf(out,"(%d, ID, %s) \n",yylineno, yytext);}
+#line 36 "c.l"
+{fprintf(out,"(%d, STR, %s)\n",yylineno, yytext);}
 	YY_BREAK
 case 5:
-/* rule 5 can match eol */
 YY_RULE_SETUP
-#line 27 "c.l"
-{fprintf(out,"(%d, STR, %s)\n",yylineno, yytext);}
+#line 37 "c.l"
+{fprintf(out,"(%d, NUM, %s) \n",yylineno, yytext);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 28 "c.l"
-{fprintf(out,"(%d, NUM, %s) \n",yylineno, yytext);}
+#line 39 "c.l"
+{
+  int index = getOrAddSymbol(yytext);
+  
+  fprintf(out,"(%d, ID, %d, %s) \n",yylineno, index, yytext);
+}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 30 "c.l"
+#line 45 "c.l"
 ECHO;
 	YY_BREAK
-#line 835 "lex.yy.c"
+#line 849 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1848,7 +1862,20 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 30 "c.l"
+#line 45 "c.l"
+
+int getOrAddSymbol(string str) {
+    for (size_t index = 0; index < symbolTable.size(); index++) {
+        if (symbolTable[index] == str) {
+            return index; // Retorna o índice se a string já existe
+        }
+    }
+
+    // Adiciona a string à tabela, caso não exista
+    symbolTable.push_back(str);
+
+    return symbolTable.size() - 1; // Retorna o índice da nova string
+}
 
 int main(int argc, char *argv[]){
     FILE *arquivo = fopen(argv[1],"r");
