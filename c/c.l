@@ -39,6 +39,9 @@ int|void|while|if|else|return {fprintf(out,"(%d, KEY, %s) \n", yylineno, yytext)
   fprintf(out,"(%d, ID, %d, %s) \n",yylineno, index, yytext);
 }
 
+\/\/[^\n]*            ;  // Ignora comentários de uma única linha (começam com `//`)
+\/\*([^*]|\*+[^*/])*\*\/ ;  // Ignora comentários de múltiplas linhas (entre `/*` e `*/`)
+
 %%
 int getOrAddSymbolIndex(string str) {
     for (size_t index = 0; index < symbolTable.size(); index++) {

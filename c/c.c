@@ -1,5 +1,11 @@
 #include <stdio.h>
 
+/*
+MATA61 - Compiladores
+2024.2
+Analisador Léxico - C
+*/
+
 // Função que retorna um número inteiro
 int soma(int a, int b) {
     return a + b;
