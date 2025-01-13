@@ -32,7 +32,7 @@ QUOTE["]
 "*/"    { BEGIN INITIAL; }
 
 {QUOTE}  { BEGIN STRING; }
-<STRING>{STR}  { BEGIN INITIAL; fprintf(out, "(%d, STR, %s)\n", yylineno, yytext);}
+<STRING>{STR}  { BEGIN INITIAL; fprintf(out, "(%d, STR, %s)\n", yylineno, yytext);} //TODO: arrumar aspas
 
 {NEWLINE}
 int|void|while|if|else|return {fprintf(out, "(%d, KEY, %s) \n", yylineno, yytext);} 
