@@ -3,12 +3,13 @@
 NUM[0-9]+(\.[0-9]*)?
 ID[a-zA-Z_][a-zA-Z0-9_]*
 NEWLINE[\n]
-STR [^"\n]+\"
+STR [^"]*\"
 
 TAB[\t]
 CHAR[a-zA-Z]
 WHITESPACE[ ]
 QUOTE["]
+
 %{
   #include<string>
   #include<iostream>
@@ -32,7 +33,7 @@ QUOTE["]
 "*/"    { BEGIN INITIAL; }
 
 {QUOTE}  { BEGIN STRING; }
-<STRING>{STR}  { BEGIN INITIAL; fprintf(out, "(%d, STR, %s)\n", yylineno, yytext);} //TODO: arrumar aspas
+<STRING>{STR}  { BEGIN INITIAL; fprintf(out, "(%d, STR, \"%s)\n", yylineno, yytext);} //TODO: arrumar aspas
 
 {NEWLINE}
 int|void|while|if|else|return {fprintf(out, "(%d, KEY, %s) \n", yylineno, yytext);} 
@@ -46,19 +47,19 @@ int|void|while|if|else|return {fprintf(out, "(%d, KEY, %s) \n", yylineno, yytext
   fprintf(out, "(%d, ID, %d) \n", yylineno, index);
 }
 
-\/\/[^\n]* ;                // Ignora comentários de uma única linha (começam com `//`)
-\/\*([^*]|\*+[^*/])*\*\/ ;  // Ignora comentários de múltiplas linhas (entre `/*` e `*/`)
-^#.*$ ;                     // Ignora diretivas de pré-processamento - palavras que começam com #
+\/\/[^\n]* ;                      // Ignora comentários de uma única linha (começam com `//`)
+\/\*([^*]|\*+[^*/])*\*\/ ;        // Ignora comentários de múltiplas linhas (entre `/*` e `*/`)
+^#.*$ ;                           // Ignora diretivas de pré-processamento - palavras que começam com #
 
 
-<COMMENT>[^*]+              // Ignora qualquer coisa após '/*' até encontrar '*/'
-<COMMENT><<EOF>> {          // Gera um erro informando que o comentário não foi fechado.
+<COMMENT>[^*]+                    // Ignora qualquer coisa após '/*' até encontrar '*/'
+<COMMENT><<EOF>> {                // Gera um erro informando que o comentário não foi fechado.
     fprintf(stderr, "Erro: Comentário não fechado na linha %d\n", yylineno);
     fprintf(out, "\nErro: Comentário não fechado na linha %d\n", yylineno);
     return 0;
 }
 
-<STRING><<EOF>> {           // Gera um erro informando que o comentário não foi fechado.
+<STRING><<EOF>> {                 // Gera um erro informando que o comentário não foi fechado.
     fprintf(stderr, "Erro: String não fechada na linha %d\n", yylineno);
     fprintf(out, "\nErro: String não fechada na linha %d\n", yylineno);
     return 0;
@@ -69,14 +70,14 @@ int|void|while|if|else|return {fprintf(out, "(%d, KEY, %s) \n", yylineno, yytext
 int getOrAddSymbolIndex(string str) {
     for (size_t index = 0; index < symbolTable.size(); index++) {
         if (symbolTable[index] == str) {
-            return index +1; // Retorna o índice se a string já existe
+            return index +1;      // Retorna o índice se a string já existe
         }
     }
 
-    // Adiciona a string à tabela, caso não exista
-    symbolTable.push_back(str);
+    
+    symbolTable.push_back(str);   // Adiciona a string à tabela, caso não exista
 
-    return symbolTable.size(); // Retorna o índice da nova string
+    return symbolTable.size();    // Retorna o índice da nova string
 }
 
 void printSymbolTable(){

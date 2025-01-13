@@ -5,12 +5,12 @@
 (2, SYM, "{")
 (3, ID, 2) 
 (3, SYM, "(")
-(3, STR, Olá mundo")
+(3, STR, "Olá mundo")
 (3, SYM, ")")
 (3, SYM, ";")
 
 Erro: Comentário não fechado na linha 4
 
 Tabela de Símbolos: 
-0  main
-1  printf
+1  main
+2  printf

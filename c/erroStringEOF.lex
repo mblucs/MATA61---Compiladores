@@ -14,7 +14,7 @@
 Erro: String não fechada na linha 4
 
 Tabela de Símbolos: 
-0  main
-1  printf
-2  Ol
-3  mundo
+1  main
+2  printf
+3  Ol
+4  mundo
