@@ -1,7 +1,7 @@
 %option noyywrap
 
-NUM[0-9]
-ID[a-zA-Z][a-zA-Z0-9]*
+NUM[0-9]+(\.[0-9]*)?
+ID[a-zA-Z_][a-zA-Z0-9_]*
 NEWLINE[\n]
 STR \"[^\"]*\"
 
@@ -20,7 +20,7 @@ WHITESPACE[ ]
 
   // Tabela de símbolos
   vector<string> symbolTable;
-  int getOrAddSymbol(string id);
+  int getOrAddSymbolIndex(string id);
 
 %}
 %option yylineno
@@ -30,6 +30,7 @@ WHITESPACE[ ]
 {NEWLINE}
 int|void|while|if|else|return {fprintf(out,"(%d, KEY, %s) \n", yylineno, yytext);} 
 "+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}"  {fprintf(out,"(%d, SYM, \"%s\")\n", yylineno, yytext);} 
+"|"|"++"|"--"|"+="|"-="|"#"|"%"|"&"|"~"|"^"|"!"|"&&"|"||"|">>"|"<<"|":"|"?"|"->"  {fprintf(out,"(%d, SYM, \"%s\")\n", yylineno, yytext);} 
 {STR} {fprintf(out,"(%d, STR, %s)\n",yylineno, yytext);}
 {NUM} {fprintf(out,"(%d, NUM, %s) \n",yylineno, yytext);}
 
@@ -42,14 +43,14 @@ int|void|while|if|else|return {fprintf(out,"(%d, KEY, %s) \n", yylineno, yytext)
 int getOrAddSymbolIndex(string str) {
     for (size_t index = 0; index < symbolTable.size(); index++) {
         if (symbolTable[index] == str) {
-            return index; // Retorna o índice se a string já existe
+            return index +1; // Retorna o índice se a string já existe
         }
     }
 
     // Adiciona a string à tabela, caso não exista
     symbolTable.push_back(str);
 
-    return symbolTable.size() - 1; // Retorna o índice da nova string
+    return symbolTable.size(); // Retorna o índice da nova string
 }
 
 int main(int argc, char *argv[]){
