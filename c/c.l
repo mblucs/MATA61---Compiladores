@@ -28,19 +28,20 @@ WHITESPACE[ ]
 %%
 
 {NEWLINE}
-int|void|while|if|else|return {fprintf(out,"(%d, KEY, %s) \n", yylineno, yytext);} 
-"+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}"  {fprintf(out,"(%d, SYM, \"%s\")\n", yylineno, yytext);} 
-"|"|"++"|"--"|"+="|"-="|"#"|"%"|"&"|"~"|"^"|"!"|"&&"|"||"|">>"|"<<"|":"|"?"|"->"  {fprintf(out,"(%d, SYM, \"%s\")\n", yylineno, yytext);} 
-{STR} {fprintf(out,"(%d, STR, %s)\n",yylineno, yytext);}
-{NUM} {fprintf(out,"(%d, NUM, %s) \n",yylineno, yytext);}
+int|void|while|if|else|return {fprintf(out, "(%d, KEY, %s) \n", yylineno, yytext);} 
+"+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}" {fprintf(out, "(%d, SYM, \"%s\")\n", yylineno, yytext);}  
+"|"|"++"|"--"|"+="|"-="|"*="|"/="|"#"|"%"|"&"|"~"|"^"|"!"|"&&"|"||"|">>"|"<<"|":"|"?"|"->" {fprintf(out, "(%d, SYM, \"%s\")\n", yylineno, yytext);} 
+{STR} {fprintf(out, "(%d, STR, %s)\n", yylineno, yytext);}
+{NUM} {fprintf(out, "(%d, NUM, %s) \n", yylineno, yytext);}
 
 {ID}+ {
   int index = getOrAddSymbolIndex(yytext);
-  fprintf(out,"(%d, ID, %d, %s) \n",yylineno, index, yytext);
+  fprintf(out, "(%d, ID, %d) \n", yylineno, index);
 }
 
-\/\/[^\n]*            ;  // Ignora comentários de uma única linha (começam com `//`)
-\/\*([^*]|\*+[^*/])*\*\/ ;  // Ignora comentários de múltiplas linhas (entre `/*` e `*/`)
+\/\/[^\n]*;                 // Ignora comentários de uma única linha (começam com `//`)
+\/\*([^*]|\*+[^*/])*\*\/;   // Ignora comentários de múltiplas linhas (entre `/*` e `*/`)
+^#.*$ ;                     // Ignora diretivas de pré-processamento - palavras que começam com #
 
 %%
 int getOrAddSymbolIndex(string str) {

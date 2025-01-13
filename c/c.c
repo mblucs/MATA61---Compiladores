@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 /*
 MATA61 - Compiladores
 2024.2
@@ -18,7 +16,7 @@ float media(float x, float y) {
 
 // Função que não retorna nada
 void imprimirMensagem() {
-    printf("Executando a função imprimirMensagem!\n");
+    printf("Executando a função imprimirMensagem.\n");
 }
 
 int main() {
@@ -28,52 +26,76 @@ int main() {
 
     // Declaração e inicialização de vetores
     int vetorInteiros[5] = {1, 2, 3, 4, 5};
-    float vetorFlutuantes[3] = {1.1, 2.2, 3.3};
+    float vetorFlutuantes[4] = {1.1, 2.2, 3.3, 4.4};
 
     // Acesso e atribuição às variáveis e elementos do vetor
-    inteiro = 15;
-    vetorInteiros[2] = inteiro * 2;
-    flutuante = flutuante + vetorFlutuantes[1];
+    inteiro = 5;
+    vetorInteiros[1] = inteiro * 2;
+    vetorInteiros[2] = soma(inteiro, vetorInteiros[3]);
+
+    flutuante += 0.2;
+    vetorFlutuantes[1] = flutuante / 4;
+    vetorFlutuantes[2] = media(vetorFlutuantes[3], inteiro*0.5);
 
     // Imprimindo os valores atualizados
-    printf("Inteiro: %d\n", inteiro);
-    printf("Flutuante: %.2f\n", flutuante);
-    printf("VetorInteiros[2]: %d\n", vetorInteiros[2]);
+    printf("inteiro = %d\n", inteiro);
+    printf("vetorInteiros[1] = %d\n", vetorInteiros[1]);
+    printf("vetorInteiros[2] = %d\n", vetorInteiros[2]);
+    
+    printf("\n");
+
+    printf("flutuante = %.2f\n", flutuante);
+    printf("vetorFlutuantes[1] = %.2f\n", vetorFlutuantes[1]);
+    printf("vetorFlutuantes[2] = %.2f\n", vetorFlutuantes[2]);
+
+    printf("\n");
 
     // Condicional simples
-    if (inteiro > 10) {
-        printf("O valor de 'inteiro' é maior que 10.\n");
-    }
+    if (flutuante > 15.0 && flutuante < 30.0) {
+        printf("O valor de 'flutuante' está entre 15.0 e 30.0.\n");
+    } 
 
     // Condicional composta
-    if (flutuante > 15.0 && flutuante < 30.0) {
-        printf("'flutuante' está entre 15.0 e 30.0.\n");
+    if (inteiro > 10) {
+        printf("O valor de 'inteiro' é maior que 10.\n");
+    } else if (inteiro < 10) {
+        printf("O valor de 'inteiro' é menor que 10.\n");
     } else {
-        printf("'flutuante' não está no intervalo esperado.\n");
+        printf("O valor de 'inteiro' é igual a 10.\n");
     }
 
-    // Comando de repetição (laço 'for')
-    printf("Elementos do vetorInteiros:\n");
+    printf("\n");
+
+    // Comandos de repetição
+    printf("Repetição usando FOR:\n");
     for (int i = 0; i < 5; i++) {
         printf("vetorInteiros[%d] = %d\n", i, vetorInteiros[i]);
     }
 
+    printf("\nRepetição usando WHILE:\n");
+    int j = 0;
+    while (j < 5) {
+        printf("vetorInteiros[%d] = %d\n", j, vetorInteiros[j]);
+        j++;
+    }
+
+    printf("\nRepetição usando DO WHILE:\n");
+    int k = 0;
+    do {
+        printf("vetorInteiros[%d] = %d\n", k, vetorInteiros[k]);
+        k++;
+    } while (k < 5);
+
+    printf("\n");
+
     // Chamando funções definidas
-    int resultadoSoma = soma(10, 20);
-    printf("Resultado da soma: %d\n", resultadoSoma);
-
-    float resultadoMedia = media(10.5, 20.5);
-    printf("Resultado da média: %.2f\n", resultadoMedia);
-
     imprimirMensagem();
 
-    // Comando de repetição (laço 'while')
-    int contador = 0;
-    printf("Laço 'while' iniciado:\n");
-    while (contador < 3) {
-        printf("Contador: %d\n", contador);
-        contador++;
-    }
+    int resultadoSoma = soma(10, 20);
+    printf("Resultado após executar a função soma: %d.\n", resultadoSoma);
+
+    float resultadoMedia = media(10.5, 20.5);
+    printf("Resultado após executar a função media: %.2f.\n", resultadoMedia);
 
     return 0;
 }
