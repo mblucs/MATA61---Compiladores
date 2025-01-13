@@ -39,8 +39,8 @@ int|void|while|if|else|return {fprintf(out, "(%d, KEY, %s) \n", yylineno, yytext
   fprintf(out, "(%d, ID, %d) \n", yylineno, index);
 }
 
-\/\/[^\n]*;                 // Ignora comentários de uma única linha (começam com `//`)
-\/\*([^*]|\*+[^*/])*\*\/;   // Ignora comentários de múltiplas linhas (entre `/*` e `*/`)
+\/\/[^\n]* ;                // Ignora comentários de uma única linha (começam com `//`)
+\/\*([^*]|\*+[^*/])*\*\/ ;  // Ignora comentários de múltiplas linhas (entre `/*` e `*/`)
 ^#.*$ ;                     // Ignora diretivas de pré-processamento - palavras que começam com #
 
 %%
@@ -57,6 +57,13 @@ int getOrAddSymbolIndex(string str) {
     return symbolTable.size(); // Retorna o índice da nova string
 }
 
+void printSymbolTable(){
+  fprintf(out, "\nTabela de Símbolos: \n");
+  for (size_t index = 0; index < symbolTable.size(); index++) {
+    fprintf(out, "%zu  %s\n", index, symbolTable[index].c_str());
+  }
+}
+
 int main(int argc, char *argv[]){
     FILE *arquivo = fopen(argv[1],"r");
     if (!arquivo) {
@@ -66,5 +73,6 @@ int main(int argc, char *argv[]){
     yyin = arquivo;
     out = fopen(argv[2],"w");
     yylex();
+    printSymbolTable();
     return 0;
 }
