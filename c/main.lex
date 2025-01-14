@@ -422,6 +422,8 @@
 (100, PUNCT, ";")
 (101, PUNCT, "}")
 
+Erro: Identificador inválido na linha 101
+
 Tabela de Símbolos: 
 1  soma
 2  a

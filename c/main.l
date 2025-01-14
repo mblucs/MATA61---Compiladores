@@ -7,16 +7,19 @@
 %state COMMENT
 %state STRING_STATE
 
-NEWLINE        [\n]
-QUOTE          ["]
-BEGIN_COMMENT  "/*"
-END_COMMENT    "*/"
+NEWLINE                [\n]
+QUOTE                  ["]
+DIRECTIVE              ^#.*$
+LINE_COMMENT           \/\/[^\n]*
+BEGIN_BLOCK_COMMENT    "/*"
+END_BLOCK_COMMENT      "*/"
+BLOCK_COMMENT_BODY     [^*\/]+
 
-KEYWORD        "alignas"|"alignof"|"auto"|"bool"|"break"|"case"|"char"|"const"|"constexpr"|"continue"|"default"|"do"|"double"|"else"|"enum"|"extern"|"false"|"float"|"for"|"goto"|"if"|"inline"|"int"|"long"|"nullptr"|"register"|"restrict"|"return"|"short"|"signed"|"sizeof"|"static"|"static_assert"|"struct"|"switch"|"thread_local"|"true"|"typedef"|"typeof"|"typeof_unqual"|"union"|"unsigned"|"void"|"volatile"|"while"|"_Atomic"|"_BitInt"|"_Complex"|"_Decimal128"|"_Decimal32"|"_Decimal64"|"_Generic"|"_Lengthof"|"_Noreturn"
-IDENTIFIER     [a-zA-Z_][a-zA-Z0-9_]*
-CONSTANT       [0-9]+(\.[0-9]*)?
-STRING_LITERAL [^"]*\"
-PUNCTUATOR     "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|"::"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"|"##"|"<:"|":>"|"<%"|"%>"|"%:"|"%:%:"
+KEYWORD                "alignas"|"alignof"|"auto"|"bool"|"break"|"case"|"char"|"const"|"constexpr"|"continue"|"default"|"do"|"double"|"else"|"enum"|"extern"|"false"|"float"|"for"|"goto"|"if"|"inline"|"int"|"long"|"nullptr"|"register"|"restrict"|"return"|"short"|"signed"|"sizeof"|"static"|"static_assert"|"struct"|"switch"|"thread_local"|"true"|"typedef"|"typeof"|"typeof_unqual"|"union"|"unsigned"|"void"|"volatile"|"while"|"_Atomic"|"_BitInt"|"_Complex"|"_Decimal128"|"_Decimal32"|"_Decimal64"|"_Generic"|"_Lengthof"|"_Noreturn"
+IDENTIFIER             [a-zA-Z_][a-zA-Z0-9_]*
+CONSTANT               [0-9]+(\.[0-9]*)?
+STRING_LITERAL         [^"]*\"
+PUNCTUATOR             "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|"::"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"|"##"|"<:"|":>"|"<%"|"%>"|"%:"|"%:%:"
 
 %{
   #include <string>
@@ -54,8 +57,8 @@ PUNCTUATOR     "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!
 }
 
 <STRING_STATE>{STRING_LITERAL} { 
-  BEGIN INITIAL; 
-  fprintf(out, "(%d, STR, \"%s)\n", yylineno, yytext); 
+  BEGIN INITIAL;
+  fprintf(out, "(%d, STR, \"%s)\n", yylineno, yytext);
 }
 
 {PUNCTUATOR} {
@@ -68,15 +71,15 @@ PUNCTUATOR     "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!
   /* =================================== */ 
 %}
 
-{BEGIN_COMMENT} { BEGIN COMMENT; }
-{END_COMMENT}   { BEGIN INITIAL; }
-{QUOTE}         { BEGIN STRING_STATE; }
+{BEGIN_BLOCK_COMMENT} { BEGIN COMMENT; }
+{END_BLOCK_COMMENT}   { BEGIN INITIAL; }
+{QUOTE}               { BEGIN STRING_STATE; }
 
 
-{NEWLINE}                        // Ignora quebras de linha
-\/\/[^\n]*                       // Ignora comentários de uma única linha (começam com `//`)
-<COMMENT>[^*]+                   // Ignora qualquer coisa após '/*' até encontrar '*/'
-^#.*$                            // Ignora diretivas de pré-processamento - palavras que começam com #
+{NEWLINE}                         // Ignora quebras de linha
+{DIRECTIVE}                       // Ignora diretivas de pré-processamento - palavras que começam com #
+{LINE_COMMENT}                    // Ignora comentários de uma única linha (começam com `//`)
+<COMMENT>{BLOCK_COMMENT_BODY}     // Ignora qualquer coisa após '/*' até encontrar '*/'
 
 
 <COMMENT><<EOF>> {                // Gera um erro informando que o comentário não foi fechado.

@@ -1,13 +1,13 @@
 (2, KEY, int) 
 (2, ID, 1) 
-(2, SYM, "(")
-(2, SYM, ")")
-(2, SYM, "{")
+(2, PUNCT, "(")
+(2, PUNCT, ")")
+(2, PUNCT, "{")
 (3, ID, 2) 
-(3, SYM, "(")
-(3, STR, "Olá mundo")
-(3, SYM, ")")
-(3, SYM, ";")
+(3, PUNCT, "(")
+(3, STR, Olá mundo")
+(3, PUNCT, ")")
+(3, PUNCT, ";")
 
 Erro: Comentário não fechado na linha 4
 
