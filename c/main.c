@@ -1,8 +1,8 @@
 /*
-MATA61 - Compiladores
-2024.2
+MATA61 - Compiladores - 2024.2
 Analisador Léxico - C
 */
+#include <stdio.h>
 
 // Função que retorna um número inteiro
 int soma(int a, int b) {
