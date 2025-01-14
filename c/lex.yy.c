@@ -1476,8 +1476,8 @@ case 4:
 YY_RULE_SETUP
 #line 60 "main.l"
 { 
-  BEGIN INITIAL; 
-  fprintf(out, "(%d, STR, %s)\n", yylineno, yytext); //TODO: arrumar aspas 
+  BEGIN INITIAL;
+  fprintf(out, "(%d, STR, \"%s)\n", yylineno, yytext);
 }
 	YY_BREAK
 case 5:
