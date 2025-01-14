@@ -16,7 +16,7 @@ KEYWORD        "alignas"|"alignof"|"auto"|"bool"|"break"|"case"|"char"|"const"|"
 IDENTIFIER     [a-zA-Z_][a-zA-Z0-9_]*
 CONSTANT       [0-9]+(\.[0-9]*)?
 STRING_LITERAL [^"]*\"
-PUNCTUATOR     "+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"["|"]"|"{"|"}"|"|"|"++"|"--"|"+="|"-="|"*="|"/="|"#"|"%"|"&"|"~"|"^"|"!"|"&&"|"||"|">>"|"<<"|":"|"?"|"->"
+PUNCTUATOR     "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|"::"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"|"##"|"<:"|":>"|"<%"|"%>"|"%:"|"%:%:"
 
 %{
   #include <string>
@@ -36,7 +36,7 @@ PUNCTUATOR     "+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"
 
 %{ 
   /* =================================== */
-  /*          DEFAULT BEHAVIOR             */
+  /*          DEFAULT BEHAVIOR           */
   /* =================================== */ 
 %}
 
@@ -74,7 +74,7 @@ PUNCTUATOR     "+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"
 
 
 {NEWLINE}                        // Ignora quebras de linha
-\/\/[^\n]*                       // Ignora comentários de uma única linha (começam com `//`)<COMMENT>[^*]+                   // Ignora qualquer coisa após '/*' até encontrar '*/'
+\/\/[^\n]*                       // Ignora comentários de uma única linha (começam com `//`)
 <COMMENT>[^*]+                   // Ignora qualquer coisa após '/*' até encontrar '*/'
 ^#.*$                            // Ignora diretivas de pré-processamento - palavras que começam com #
 
