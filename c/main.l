@@ -55,7 +55,7 @@ PUNCTUATOR     "+"|"-"|"*"|"/"|"<"|"<="|">"|">="|"=="|"!="|"="|";"|","|"("|")"|"
 
 <STRING_STATE>{STRING_LITERAL} { 
   BEGIN INITIAL; 
-  fprintf(out, "(%d, STR, %s)\n", yylineno, yytext); //TODO: arrumar aspas 
+  fprintf(out, "(%d, STR, \"%s)\n", yylineno, yytext); 
 }
 
 {PUNCTUATOR} {
