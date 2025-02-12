@@ -7,28 +7,21 @@
 
 Node *root;
 
-int yylex(void);
+int yylex();
 void yyerror(const char *s);
-
 %}
 
 %union {
     char* num;
-    char *string;
     char *id;
     Node *node;
 }
 
-%token <id> NUMBER 
-%token <string> KEYWORD
-%token <string> IDENTIFIER
-%token <string> STRING_LITERAL
-%token OPERATOR COMPARE
+%token <id> ID NUM RELOP TYPE
+%token IF ELSE WHILE
+/* %token '=' ';' '(' ')' '{' '}' */
 
-%right '='
-%left '+' '-' '*' '/'
-
-%type <node> program statement_list statement declaration keyword_expr identifier_expr expression string_expr type
+%type <node> program statement statement_list expression attribution if_statement type declaration condition
 
 %start program
 
@@ -44,41 +37,36 @@ statement_list:
     ;
 
 statement:
-    declaration { $$ = create_node("statement", 1, $1); }
-    | keyword_expr { $$ = $1; }
-    | identifier_expr { $$ = $1; }
-    | expression { $$ = $1; }
-    | string_expr { $$ = $1; }
+    attribution { $$ = create_node("statement", 1, $1); }
+    | if_statement { $$ = create_node("statement", 1, $1); }
+    | declaration { $$ = create_node("statement", 1, $1); }
     ;
 
 declaration:
-    type IDENTIFIER ';' { $$ = create_node("declaration", 2, $1, create_node($2, 0)); }
+    type ID ';' { $$ = create_node("declaration", 2, $1, create_node($2, 0)); }
     ;
 
 type:
-    KEYWORD { $$ = create_node($1, 0); }
-    /* INT { $$ = create_node("INT", 0); }
-    | FLOAT { $$ = create_node("FLOAT", 0); } */
+    TYPE { $$ = create_node($1, 0); }
     ;
 
-keyword_expr:
-    KEYWORD { $$ = create_node($1, 0); }
+attribution:
+    ID '=' expression ';' { $$ = create_node("attribution", 2, create_node($1, 0), $3); }
     ;
 
-identifier_expr:
-    IDENTIFIER { $$ = create_node($1, 0); }
+if_statement:
+    IF '(' condition ')' '{' statement_list '}' ELSE '{' statement_list '}' { $$ = create_node("if_statement", 3, $3, $6, $10); }
+    | IF '(' condition ')' '{' statement_list '}' { $$ = create_node("if_statement", 2, $3, $6); }
     ;
+condition:
+    expression RELOP expression { $$ = create_node("condition", 3, $1, create_node("relop",1,create_node($2,0)),$3); }
 
 expression:
-    NUMBER { $$ = create_node($1, 0); }
-    ;
-
-string_expr:
-    STRING_LITERAL { $$ = create_node($1, 0); }
+    NUM { $$ = create_node($1, 0); }
+    | ID { $$ = create_node($1, 0); }
     ;
 
 %%
-
 
 Node *create_node(char *label, int child_count, ...) {
     Node *node = malloc(sizeof(Node));
@@ -110,16 +98,12 @@ void print_tree(Node *node, int depth) {
 }
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Erro: %s\n", s);
+    fprintf(stderr, "Erro de sintaxe: %s\n", s);
 }
 
 int main() {
     if (yyparse() == 0) {
-        printf("Parse successful!\n");
         print_tree(root, 0);
-
-    } else {
-        printf("Parse failed!\n");
     }
     return 0;
 }

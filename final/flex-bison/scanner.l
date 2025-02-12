@@ -1,5 +1,6 @@
 %{
 #include "parser.tab.h"
+#include "node.h"  
 %}
 
 %option noyywrap
@@ -42,7 +43,7 @@ COMPARE                ">"|"<"|"<>"|"=="|">="|"<="|"!="
 }
 
 {CONSTANT} {
-  yylval.num = atoi(yytext); 
+  yylval.string = strdup(yytext); 
   return NUMBER;
 }
 
