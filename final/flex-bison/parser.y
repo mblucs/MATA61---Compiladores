@@ -47,47 +47,34 @@ statement:
 
 keyword_expr:
     KEYWORD {
-        printf("Palavra-chave reconhecida: %s\n", $1);
+        printf("statement KEY: %s\n", $1);
     }
     ;
 
 identifier_expr:
     IDENTIFIER {
-        printf("Identificador reconhecido: %s\n", $1);
+        printf("ID: %s\n", $1);
     }
     ;
 
 const_expr:
-    CONSTANT {
-        printf("Constante reconhecida: %d\n", $1);
+    CONSTANT { 
+        printf("%d\n", $1); 
     }
     ;
 
 string_expr:
     STRING_LITERAL {
-        printf("String reconhecida: %s\n", $1);
+        printf("STR: %s\n", $1);
     }
     ;
 
 punctuator_expr:
     PUNCTUATOR {
-        printf("Punctuator reconhecido: %s\n", $1);
+        printf("%s\n", $1);
     }
     ;
 
-
-/* 
-end:
-    expr                { printf("%d\n",$1); }
-expr:
-    expr PLUS expr      { $$ = $1 + $3; }
-    | expr MINUS expr   { $$ = $1 - $3; }
-    | expr MULT expr    { $$ = $1 * $3; }
-    | expr DIV expr     { $$ = $1 / $3; }
-    | OPAR expr CPAR    { $$ = $2; }
-    | NUM               { $$ = $1; }
-    ;
- */
 
 %%
 

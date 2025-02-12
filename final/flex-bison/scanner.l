@@ -31,6 +31,7 @@ PUNCTUATOR             "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-
 %}
 
 {KEYWORD} {
+  yylval.string = strdup(yytext);
   return KEYWORD;
 }
 
@@ -51,6 +52,7 @@ PUNCTUATOR             "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-
 }
 
 {PUNCTUATOR} {
+  yylval.string = strdup(yytext);  
   return PUNCTUATOR;
 }
 

@@ -1075,7 +1075,7 @@ yyreduce:
   case 9: /* keyword_expr: KEYWORD  */
 #line 49 "parser.y"
             {
-        printf("Palavra-chave reconhecida: %s\n", (yyvsp[0].string));
+        printf("statement KEY: %s\n", (yyvsp[0].string));
     }
 #line 1081 "parser.tab.c"
     break;
@@ -1083,15 +1083,15 @@ yyreduce:
   case 10: /* identifier_expr: IDENTIFIER  */
 #line 55 "parser.y"
                {
-        printf("Identificador reconhecido: %s\n", (yyvsp[0].id));
+        printf("ID: %s\n", (yyvsp[0].id));
     }
 #line 1089 "parser.tab.c"
     break;
 
   case 11: /* const_expr: CONSTANT  */
 #line 61 "parser.y"
-             {
-        printf("Constante reconhecida: %d\n", (yyvsp[0].num));
+             { 
+        printf("%d\n", (yyvsp[0].num)); 
     }
 #line 1097 "parser.tab.c"
     break;
@@ -1099,7 +1099,7 @@ yyreduce:
   case 12: /* string_expr: STRING_LITERAL  */
 #line 67 "parser.y"
                    {
-        printf("String reconhecida: %s\n", (yyvsp[0].string));
+        printf("STR: %s\n", (yyvsp[0].string));
     }
 #line 1105 "parser.tab.c"
     break;
@@ -1107,7 +1107,7 @@ yyreduce:
   case 13: /* punctuator_expr: PUNCTUATOR  */
 #line 73 "parser.y"
                {
-        printf("Punctuator reconhecido: %s\n", (yyvsp[0].string));
+        printf("%s\n", (yyvsp[0].string));
     }
 #line 1113 "parser.tab.c"
     break;
@@ -1306,7 +1306,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 111 "parser.y"
+#line 79 "parser.y"
 
 
 void yyerror(const char *s) {

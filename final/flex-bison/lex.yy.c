@@ -1134,21 +1134,9 @@ char *yytext;
 #line 1 "scanner.l"
 #line 2 "scanner.l"
 #include "parser.tab.h"
-// #include <string>
-// #include <iostream>
-// #include <vector>  
+#line 1138 "lex.yy.c"
 
-// using namespace std;
-
-// FILE *out ;
-// int linha;
-
-// // Tabela de símbolos
-// vector<string> symbolTable;
-// int getOrAddSymbolIndex(string id);
-#line 1150 "lex.yy.c"
-
-#line 1152 "lex.yy.c"
+#line 1140 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -1370,17 +1358,17 @@ YY_DECL
 		}
 
 	{
-#line 37 "scanner.l"
+#line 25 "scanner.l"
 
 
  
-#line 41 "scanner.l"
+#line 29 "scanner.l"
   /* =================================== */
   /*          DEFAULT BEHAVIOR           */
   /* =================================== */ 
 
 
-#line 1384 "lex.yy.c"
+#line 1372 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1450,14 +1438,15 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 46 "scanner.l"
+#line 34 "scanner.l"
 {
+  yylval.string = strdup(yytext);
   return KEYWORD;
 }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 50 "scanner.l"
+#line 39 "scanner.l"
 {
   yylval.id = strdup(yytext);  
   return IDENTIFIER;
@@ -1465,7 +1454,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 55 "scanner.l"
+#line 44 "scanner.l"
 {
   yylval.num = atoi(yytext); 
   return CONSTANT;
@@ -1474,7 +1463,7 @@ YY_RULE_SETUP
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 60 "scanner.l"
+#line 49 "scanner.l"
 { 
   BEGIN INITIAL;
   yylval.string = strdup(yytext);  
@@ -1483,8 +1472,9 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 66 "scanner.l"
+#line 55 "scanner.l"
 {
+  yylval.string = strdup(yytext);  
   return PUNCTUATOR;
 }
 	YY_BREAK
@@ -1495,23 +1485,23 @@ YY_RULE_SETUP
 
 case 6:
 YY_RULE_SETUP
-#line 76 "scanner.l"
+#line 66 "scanner.l"
 { BEGIN COMMENT; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 77 "scanner.l"
+#line 67 "scanner.l"
 { BEGIN INITIAL; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 78 "scanner.l"
+#line 68 "scanner.l"
 { BEGIN STRING_STATE; }
 	YY_BREAK
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 81 "scanner.l"
+#line 71 "scanner.l"
 // Ignora quebras de linha
 	YY_BREAK
 case 10:
@@ -1519,29 +1509,29 @@ case 10:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 82 "scanner.l"
+#line 72 "scanner.l"
 // Ignora diretivas de pré-processamento - palavras que começam com #
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 83 "scanner.l"
+#line 73 "scanner.l"
 // Ignora comentários de uma única linha (começam com `//`)
 	YY_BREAK
 case 12:
 /* rule 12 can match eol */
 YY_RULE_SETUP
-#line 84 "scanner.l"
+#line 74 "scanner.l"
 // Ignora qualquer coisa após '/*' até encontrar '*/'
 	YY_BREAK
 case YY_STATE_EOF(COMMENT):
-#line 87 "scanner.l"
+#line 77 "scanner.l"
 {                // Gera um erro informando que o comentário não foi fechado.
     fprintf(stderr, "Erro: Comentário não fechado na linha %d\n", yylineno);
     return 0;
 }
 	YY_BREAK
 case YY_STATE_EOF(STRING_STATE):
-#line 92 "scanner.l"
+#line 82 "scanner.l"
 {           // Gera um erro informando que a string não foi fechada.
     fprintf(stderr, "Erro: String não fechada na linha %d\n", yylineno);
     return 0;
@@ -1549,10 +1539,10 @@ case YY_STATE_EOF(STRING_STATE):
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 97 "scanner.l"
+#line 87 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1556 "lex.yy.c"
+#line 1546 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2571,44 +2561,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 97 "scanner.l"
+#line 87 "scanner.l"
 
-
-
-/* 
-int getOrAddSymbolIndex(string str) {
-    for (size_t index = 0; index < symbolTable.size(); index++) {
-        if (symbolTable[index] == str) {
-            return index +1;      // Retorna o índice se a string já existe
-        }
-    }
-    
-    symbolTable.push_back(str);   // Adiciona a string à tabela, caso não exista
-
-    return symbolTable.size();    // Retorna o índice da nova string
-}
-
-void printSymbolTable(){
-  fprintf(out, "\nTabela de Símbolos: \n");
-  for (size_t index = 0; index < symbolTable.size(); index++) {
-    fprintf(out, "%zu  %s\n", index+1, symbolTable[index].c_str());
-  }
-}
-*/
-
-/* 
-int main(int argc, char *argv[]){
-    FILE *arquivo = fopen(argv[1], "r");
-    if (!arquivo) {
-      cout << "Arquivo inexistente" << endl;
-      return -1;
-    }
-    yyin = arquivo;
-    out = fopen(argv[2], "w");
-    yylex();
-    printSymbolTable();
-    return 0;
-}  
-*/
 
 
