@@ -76,25 +76,6 @@ punctuator_expr:
     ;
 
 
-    
-/*     
-program:
-  declarations
-  ;
-
-declarations:
-  | declarations declaration
-  ;
-
-declaration:
-  KEYWORD { printf("Palavra-chave: %s\n", $1); free($1); }
-    | IDENTIFIER { printf("Identificador: %s\n", $1); free($1); }
-    | CONSTANT { printf("Constante: %d\n", $1); }
-    | STRING_LITERAL { printf("String: %s\n", $1); free($1); }
-    | PUNCTUATOR { printf("Punctuator: %s\n", $1); free($1); }
-  ; 
-*/
-
 /* 
 end:
     expr                { printf("%d\n",$1); }
