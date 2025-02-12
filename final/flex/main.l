@@ -75,7 +75,6 @@ PUNCTUATOR             "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-
 {END_BLOCK_COMMENT}   { BEGIN INITIAL; }
 {QUOTE}               { BEGIN STRING_STATE; }
 
-
 {NEWLINE}                         // Ignora quebras de linha
 {DIRECTIVE}                       // Ignora diretivas de pré-processamento - palavras que começam com #
 {LINE_COMMENT}                    // Ignora comentários de uma única linha (começam com `//`)

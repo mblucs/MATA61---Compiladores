@@ -1,3 +1,10 @@
+// comment 1
+/* comment 2 */
+
+/*  
+a
+  */
+
 int x;
 float y[1];
 int a, b, c[2];

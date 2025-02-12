@@ -17,7 +17,7 @@ void yyerror(const char *s);
     Node *node;
 }
 
-%token <id> ID NUM RELOP TYPE
+%token <id> ID NUM RELOP TYPE STRING_LITERAL
 %token IF ELSE WHILE
 
 %type <node> program 
@@ -105,6 +105,7 @@ loop_statement:
 expression:
     NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
     | id { $$ = $1; }
+    | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }
     ;
 
 %%
