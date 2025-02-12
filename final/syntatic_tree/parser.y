@@ -26,8 +26,7 @@ void yyerror(const char *s);
 %type <node> if_statement loop_statement 
 
 %type <node> attribution expression declaration 
-%type <node> id id_list
-/* %type <node> id id_list array_dimensions function function_params */
+%type <node> id id_list function 
 
 %type <node> type comparison
 
@@ -54,7 +53,11 @@ statement:
 
 declaration:
     type id_list ';' { $$ = create_node("declaration", 2, $1, $2); }
-    /* |  TODO int x, y[2], z */
+    | function { $$ = create_node("declaration", 1, $1); }
+    ;
+
+type:
+    TYPE { $$ = create_node("type_specifier", 1, create_node($1, 0)); }   //INT | FLOAT | LONG | BOOL | CHAR | CONST | DOUBLE | ENUM | VOID
     ;
 
 id_list:
@@ -63,19 +66,17 @@ id_list:
     ;
 
 id:
-    ID { $$ = create_node($1, 0); }
-    | ID '[' NUM ']' { $$ = create_node("array", 2, create_node($1, 0), create_node("array_size", 1, create_node($3, 0))); }
-
+    ID { $$ = create_node("id_name", 1, create_node($1, 0)); }
+    | ID '[' NUM ']' { $$ = create_node("array", 2, create_node("id_name", 1, create_node($1, 0)), create_node("array_size", 1, create_node($3, 0))); }
     ;
-
-type:
-    TYPE { $$ = create_node($1, 0); }   //INT | FLOAT | LONG | BOOL | CHAR | CONST | DOUBLE | ENUM | VOID
+    
+function:
+    type ID '(' type ID ')' '{' statement_list '}' { $$ = create_node("function", 6, $1, create_node($2, 0), create_node("parameter", 2, $4, create_node($5, 0)), create_node("{", 0), $8, create_node("}", 0)); }
     ;
 
 attribution:
-    ID '=' expression ';' { $$ = create_node("attribution", 2, create_node($1, 0), $3); }
+    id '=' expression ';' { $$ = create_node("attribution", 2, $1, $3); }
     ;
-
 
 if_statement:
     IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}' { $$ = create_node("if_statement", 3, $3, $6, $10); }
@@ -92,8 +93,8 @@ loop_statement:
 
 
 expression:
-    NUM { $$ = create_node($1, 0); }
-    | ID { $$ = create_node($1, 0); }
+    NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
+    | id { $$ = $1; }
     ;
 
 %%

@@ -3,6 +3,11 @@ float y[1];
 int a, b, c[2];
 
 x = 5;
+
+void func1(int x){
+    x = 10;
+}
+
 if (x < 3) {
     x = 1;
 } else {
