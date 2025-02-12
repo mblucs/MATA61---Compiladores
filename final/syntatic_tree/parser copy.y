@@ -26,8 +26,7 @@ void yyerror(const char *s);
 %type <node> if_statement loop_statement 
 
 %type <node> attribution expression declaration 
-%type <node> id id_list
-/* %type <node> id id_list array_dimensions function function_params */
+%type <node> id id_list array_dimensions function function_params
 
 %type <node> type comparison
 
@@ -54,18 +53,30 @@ statement:
 
 declaration:
     type id_list ';' { $$ = create_node("declaration", 2, $1, $2); }
-    /* |  TODO int x, y[2], z */
+    | function { $$ = create_node("declaration", 1, $1); }
     ;
-
 id_list:
-    id { $$ = $1; }
-    | id_list ',' id { $$ = create_node("id_list", 2, $1, $3); }
+    id { $$ = create_node("id_list", 1, $1); }  // int x;
+    | id_list ',' id { $$ = create_node("id_list", 2, $1, $3); } // int x, y, z;
     ;
 
 id:
-    ID { $$ = create_node($1, 0); }
-    | ID '[' NUM ']' { $$ = create_node("array", 2, create_node($1, 0), create_node("array_size", 1, create_node($3, 0))); }
+    ID { $$ = create_node("id", 1, $1); }  // int x;
+    | ID array_dimensions { $$ = create_node("array", 2, $1, $2); } // int y[10];
+    ;
 
+array_dimensions:
+    '[' NUM ']' { $$ = create_node("dimension", 1, $2); }
+    | array_dimensions '[' NUM ']' { $$ = create_node("dimensions", 2, $1, $3); }
+    ;
+
+function:
+    type ID '(' function_params ')' '{' statement_list '}' { $$ = create_node("function", 3, $1, $2, $4, $7); }
+    ;
+    
+function_params:
+    type ID { $$ = create_node("declaration", 2, $1, $2); }
+    | function_params ',' type ID { $$ = create_node("declaration", 3, $1, $3, $4); }
     ;
 
 type:
@@ -73,23 +84,21 @@ type:
     ;
 
 attribution:
-    ID '=' expression ';' { $$ = create_node("attribution", 2, create_node($1, 0), $3); }
+    ID '=' expression ';' { $$ = create_node("attribution", 2, $1, $3); }
     ;
-
 
 if_statement:
     IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}' { $$ = create_node("if_statement", 3, $3, $6, $10); }
     | IF '(' comparison ')' '{' statement_list '}' { $$ = create_node("if_statement", 2, $3, $6); }
     ;
 
-comparison:
-    expression RELOP expression { $$ = create_node("compare", 3, $1, create_node("relop",1,create_node($2,0)),$3); }
-    // TODO: reduce to boolean
-
 loop_statement:
     WHILE '(' comparison ')' '{' statement_list '}' { $$ = create_node("loop_statement", 2, $3, $6); }
     ;
 
+comparison:
+    expression RELOP expression { $$ = create_node("comparison", 3, $1, create_node("relop",1,create_node($2,0)),$3); }
+    // TODO: reduce to boolean
 
 expression:
     NUM { $$ = create_node($1, 0); }
