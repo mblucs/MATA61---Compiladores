@@ -1,5 +1,5 @@
 %{
-  /* Referência: https://open-std.org/JTC1/SC22/WG14/www/docs/n3435.pdf - Seção 6.4.*/
+#include "parser.tab.h"
 %}
 
 %option noyywrap
@@ -19,14 +19,11 @@ KEYWORD                "alignas"|"alignof"|"auto"|"bool"|"break"|"case"|"char"|"
 IDENTIFIER             [a-zA-Z_][a-zA-Z0-9_]*
 CONSTANT               [0-9]+(\.[0-9]*)?
 STRING_LITERAL         [^"]*\"
-
-PUNCTUATOR            "+" | "-" | "*" | "/" | "=" | "|" | "," | ";" | ":" | "." | "[" | "]" | "{" | "}" | "(" | ")" 
-COMPARATOR        "<" | ">" | "==" | "<=" | ">=" | "!=" | "<>" | 
+PUNCTUATOR             "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|"::"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"|"##"|"<:"|":>"|"<%"|"%>"|"%:"|"%:%:"
 
 %{
-  //PUNCTUATOR             "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"|"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"|"?"|":"|"::"|";"|"..."|"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^="|"|="|","|"#"|"##"|"<:"|":>"|"<%"|"%>"|"%:"|"%:%:"
 
-  #include <string>
+  // #include <string>
   #include <iostream>
   #include <vector>  
   using namespace std;
@@ -49,28 +46,34 @@ COMPARATOR        "<" | ">" | "==" | "<=" | ">=" | "!=" | "<>" |
 
 {KEYWORD} {
   fprintf(out, "(%d, KEY, %s) \n", yylineno, yytext);
+  return KEYWORD;
 }
 
 {IDENTIFIER}+ {
   int index = getOrAddSymbolIndex(yytext);
   fprintf(out, "(%d, ID, %d) \n", yylineno, index);
+  // yylval.id = atoi(yytext); 
+  yylval.id = strdup(yytext);  
+  return IDENTIFIER;
 }
 
 {CONSTANT} {
   fprintf(out, "(%d, CONST, %s) \n", yylineno, yytext);
+  yylval.num = atoi(yytext); 
+  return CONSTANT;
 }
 
 <STRING_STATE>{STRING_LITERAL} { 
   BEGIN INITIAL;
   fprintf(out, "(%d, STR, \"%s)\n", yylineno, yytext); 
+  // yylval.string = atoi(yytext); 
+  yylval.string = strdup(yytext);  
+  return STRING_LITERAL;
 }
 
 {PUNCTUATOR} {
   fprintf(out, "(%d, PUNCT, \"%s\")\n", yylineno, yytext);
-}
-
-{COMPARATOR} {
-  fprintf(out, "(%d, CMP, \"%s\")\n", yylineno, yytext);
+  return PUNCTUATOR;
 }
 
 %{ 
