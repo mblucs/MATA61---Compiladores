@@ -10,7 +10,6 @@ int yylex(void);
 %union {
     int num;
     char *string;
-    char *id;
 }
 
 /* %token <num> NUM
@@ -20,16 +19,14 @@ int yylex(void);
 
 // Declaração dos tokens
 
-%token <string> KEYWORD
-%token <id> IDENTIFIER
 %token <num> CONSTANT
+%token <string> KEYWORD
+%token <string> IDENTIFIER
 %token <string> STRING_LITERAL
 %token <string> PUNCTUATOR
 
 
 %start program
-/* %type <num> end expr */
-
 
 %%
 program:

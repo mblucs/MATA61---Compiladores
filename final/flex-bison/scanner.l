@@ -36,7 +36,7 @@ PUNCTUATOR             "["|"]"|"("|")"|"{"|"}"|"."|"->"|"++"|"--"|"&"|"*"|"+"|"-
 }
 
 {IDENTIFIER}+ {
-  yylval.id = strdup(yytext);  
+  yylval.string = strdup(yytext);  
   return IDENTIFIER;
 }
 
