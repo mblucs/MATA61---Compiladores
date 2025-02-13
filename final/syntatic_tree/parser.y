@@ -77,7 +77,7 @@ id_list:
 
 identifier:
     ID { $$ = create_node("identifier", 1, create_node($1, 0)); }
-    | ID '[' NUM ']' { $$ = create_node("array", 2, create_node("identifier", 1, create_node($1, 0)), create_node("array_size", 1, create_node($3, 0))); }
+    | ID '[' NUM ']' { $$ = create_node("array", 2, create_node("identifier", 1, create_node($1, 0)), create_node("array_index", 1, create_node($3, 0))); }
     ;
     
 function:
@@ -87,7 +87,7 @@ function:
 
 parameter_list_opt:
     parameter_list { $$ = $1; }
-    | /* empty */ { $$ = create_node("parameter_list", 0); }
+    | { $$ = create_node("parameter_list", 0); } //empty
     ;
 
 parameter_list:
@@ -124,8 +124,8 @@ return_statement:
 
 expression:
     NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
-    | identifier { $$ = $1; }
     | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }
+    | identifier { $$ = $1; }
     | expression '+' expression { $$ = create_node("add", 2, $1, $3); }
     | expression '-' expression { $$ = create_node("subtract", 2, $1, $3); }
     | expression '*' expression { $$ = create_node("multiply", 2, $1, $3); }

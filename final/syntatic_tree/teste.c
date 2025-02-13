@@ -33,5 +33,13 @@ int main(){
     int vetorInteiros[5] = {1, 2, 3, 4, 5};
     float vetorFlutuantes[4] = {1.1, 2.2, 3.3, 4.4};
 
+    
+    // Acesso e atribuição às variáveis e elementos do vetor
+    inteiro = 5;
+    vetorInteiros[1] = inteiro * 2;
+    vetorInteiros[0] = vetorInteiros[0];
+    inteiro = soma(1,2);
+    // vetorInteiros[2] = soma(inteiro, vetorInteiros[3]);
+
     return;
 }

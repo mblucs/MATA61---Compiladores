@@ -607,7 +607,7 @@ static const yytype_int8 yydefact[] =
 {
        0,    17,    14,     0,     0,     0,     0,     2,     3,     5,
        0,     0,    10,     6,     7,     8,     9,     0,    22,     0,
-       0,    34,    36,    33,     0,     0,    35,    43,     0,     1,
+       0,    34,    35,    33,     0,     0,    36,    43,     0,     1,
        4,     0,    15,    12,    13,     0,     0,     0,     0,    21,
       23,    26,     0,     0,     0,     0,    44,     0,     0,     0,
        0,     0,    32,    11,     0,     0,    18,    25,     0,     0,
@@ -1266,7 +1266,7 @@ yyreduce:
 
   case 18: /* identifier: ID '[' NUM ']'  */
 #line 80 "parser.y"
-                     { (yyval.node) = create_node("array", 2, create_node("identifier", 1, create_node((yyvsp[-3].str), 0)), create_node("array_size", 1, create_node((yyvsp[-1].str), 0))); }
+                     { (yyval.node) = create_node("array", 2, create_node("identifier", 1, create_node((yyvsp[-3].str), 0)), create_node("array_index", 1, create_node((yyvsp[-1].str), 0))); }
 #line 1271 "parser.tab.c"
     break;
 
@@ -1290,7 +1290,7 @@ yyreduce:
 
   case 22: /* parameter_list_opt: %empty  */
 #line 90 "parser.y"
-                  { (yyval.node) = create_node("parameter_list", 0); }
+      { (yyval.node) = create_node("parameter_list", 0); }
 #line 1295 "parser.tab.c"
     break;
 
@@ -1366,15 +1366,15 @@ yyreduce:
 #line 1367 "parser.tab.c"
     break;
 
-  case 35: /* expression: identifier  */
+  case 35: /* expression: STRING_LITERAL  */
 #line 127 "parser.y"
-                 { (yyval.node) = (yyvsp[0].node); }
+                     { (yyval.node) = create_node("string_literal", 1, create_node((yyvsp[0].str), 0)); }
 #line 1373 "parser.tab.c"
     break;
 
-  case 36: /* expression: STRING_LITERAL  */
+  case 36: /* expression: identifier  */
 #line 128 "parser.y"
-                     { (yyval.node) = create_node("string_literal", 1, create_node((yyvsp[0].str), 0)); }
+                 { (yyval.node) = (yyvsp[0].node); }
 #line 1379 "parser.tab.c"
     break;
 
