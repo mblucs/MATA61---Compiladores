@@ -38,8 +38,25 @@ int main(){
     inteiro = 5;
     vetorInteiros[1] = inteiro * 2;
     vetorInteiros[0] = vetorInteiros[0];
-    inteiro = soma(1,2);
-    // vetorInteiros[2] = soma(inteiro, vetorInteiros[3]);
+    // vetorInteiros[2] = soma(inteiro, vetorInteiros[3]); //TODO: attribution: identifier '=' expression | expression = function
+
+    // flutuante += 0.2;
+    vetorFlutuantes[1] = flutuante / 4;
+    // vetorFlutuantes[2] = media(vetorFlutuantes[3], inteiro*0.5);
+
+    
+    // Imprimindo os valores atualizados
+    printf("inteiro = %d\n", inteiro);
+    printf("vetorInteiros[1] = %d\n", vetorInteiros[1]);
+    printf("vetorInteiros[2] = %d\n", vetorInteiros[2]);
+    
+    printf("\n");
+
+    printf("flutuante = %.2f\n", flutuante);
+    printf("vetorFlutuantes[1] = %.2f\n", vetorFlutuantes[1]);
+    printf("vetorFlutuantes[2] = %.2f\n", vetorFlutuantes[2]);
+
+    printf("\n");
 
     return;
 }
