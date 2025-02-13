@@ -30,8 +30,8 @@ int main(){
 
     
     // Declaração e inicialização de vetores
-    // int vetorInteiros[5] = {1, 2, 3, 4, 5};
-    // float vetorFlutuantes[4] = {1.1, 2.2, 3.3, 4.4};
+    int vetorInteiros[5] = {1, 2, 3, 4, 5};
+    float vetorFlutuantes[4] = {1.1, 2.2, 3.3, 4.4};
 
     return;
 }

@@ -30,9 +30,10 @@ void yyerror(const char *s);
 %type <node> statement statement_list 
 %type <node> if_statement loop_statement return_statement
 
-%type <node> attribution expression declaration 
-%type <node> identifier id_list function 
+%type <node> attribution  declaration function 
+%type <node> identifier id_list 
 %type <node> parameter_list_opt parameter_list parameter 
+%type <node> expression_list expression
 
 %type <node> type comparison
 
@@ -130,9 +131,14 @@ expression:
     | expression '*' expression { $$ = create_node("multiply", 2, $1, $3); }
     | expression '/' expression { $$ = create_node("divide", 2, $1, $3); }
     | '(' expression ')' { $$ = $2; }
+    | '{' expression_list '}' { $$ = create_node("expression_list", 1, $2); }  // {1, 2, 3, 4, 5}
     | function { $$ = $1; }
     ;
 
+expression_list:
+    expression { $$ = create_node("expression_list", 1, $1); }
+    | expression_list ',' expression { $$ = create_node("expression_list", 2, $1, $3); }
+    ;
 %%
 
 Node *create_node(char *label, int child_count, ...) {
