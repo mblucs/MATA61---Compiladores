@@ -56,13 +56,20 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     ID = 258,                      /* ID  */
     NUM = 259,                     /* NUM  */
-    RELOP = 260,                   /* RELOP  */
+    RELATIONAL_OP = 260,           /* RELATIONAL_OP  */
     TYPE = 261,                    /* TYPE  */
     STRING_LITERAL = 262,          /* STRING_LITERAL  */
     IF = 263,                      /* IF  */
     ELSE = 264,                    /* ELSE  */
     WHILE = 265,                   /* WHILE  */
-    RETURN = 266                   /* RETURN  */
+    RETURN = 266,                  /* RETURN  */
+    LOGICAL_OP = 267,              /* LOGICAL_OP  */
+    BITWISE_OP = 268,              /* BITWISE_OP  */
+    ASSIGN_OP = 269,               /* ASSIGN_OP  */
+    INC_DEC_OP = 270,              /* INC_DEC_OP  */
+    PREPROCESSOR_OP = 271,         /* PREPROCESSOR_OP  */
+    UNARY_OP = 272,                /* UNARY_OP  */
+    TERNARY_OP = 273               /* TERNARY_OP  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -77,7 +84,7 @@ union YYSTYPE
     char *str;
     Node *node;
 
-#line 81 "parser.tab.h"
+#line 88 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

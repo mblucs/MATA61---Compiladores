@@ -17,13 +17,21 @@ void yyerror(const char *s);
     Node *node;
 }
 
-%token <str> ID NUM RELOP TYPE STRING_LITERAL
+%token <str> ID NUM RELATIONAL_OP TYPE STRING_LITERAL
 %token IF ELSE WHILE RETURN
+%token <str> LOGICAL_OP BITWISE_OP ASSIGN_OP INC_DEC_OP PREPROCESSOR_OP UNARY_OP TERNARY_OP
 
 %left '+' '-'
 %left '*' '/'
 %right '='
-%nonassoc RELOP
+%nonassoc RELATIONAL_OP
+%nonassoc LOGICAL_OP
+%nonassoc BITWISE_OP
+%nonassoc ASSIGN_OP
+%nonassoc INC_DEC_OP
+%nonassoc PREPROCESSOR_OP
+%nonassoc UNARY_OP
+%right TERNARY_OP ':'  
 
 %type <node> program 
 
@@ -102,6 +110,8 @@ parameter:
 
 attribution:
     identifier '=' expression ';' { $$ = create_node("attribution", 2, $1, $3); }
+    | identifier ASSIGN_OP expression { $$ = create_node("assign_op", 3, $1, create_node($2, 0), $3); }
+    | identifier INC_DEC_OP { $$ = create_node("inc_dec_op", 2, $1, create_node($2, 0)); }
     ;
 
 if_statement:
@@ -110,8 +120,10 @@ if_statement:
     ;
 
 comparison:
-    expression RELOP expression { $$ = create_node("compare", 3, $1, create_node("relop",1,create_node($2,0)),$3); }
-    // TODO: reduce to boolean
+    expression RELATIONAL_OP expression { $$ = create_node("relacional_op", 3, $1, create_node($2,0),$3); }
+    | comparison LOGICAL_OP comparison { $$ = create_node("logical_op", 3, $1, create_node($2, 0), $3); }  
+    | identifier { $$ = $1; }
+    | function { $$ = $1; }
 
 loop_statement:
     WHILE '(' comparison ')' '{' statement_list '}' { $$ = create_node("loop_statement", 2, $3, $6); }
@@ -124,12 +136,17 @@ return_statement:
 
 expression:
     NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
-    | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }
+    | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }     /* TODO: rever string como expression */
     | identifier { $$ = $1; }
     | expression '+' expression { $$ = create_node("add", 2, $1, $3); }
     | expression '-' expression { $$ = create_node("subtract", 2, $1, $3); }
     | expression '*' expression { $$ = create_node("multiply", 2, $1, $3); }
     | expression '/' expression { $$ = create_node("divide", 2, $1, $3); }
+    | expression BITWISE_OP expression { $$ = create_node("bitwise_op", 3, $1, create_node($2, 0), $3); }
+    | identifier INC_DEC_OP { $$ = create_node("inc_dec_op", 2, $1, create_node($2, 0)); }
+    | PREPROCESSOR_OP expression { $$ = create_node("preprocessor_op", 2, create_node($1, 0), $2); }
+    | UNARY_OP expression { $$ = create_node("unary_op", 2, create_node($1, 0), $2); }
+    | expression TERNARY_OP expression ':' expression { $$ = create_node("ternary_op", 4, $1, create_node($2, 0), $3, $5); }
     | '(' expression ')' { $$ = $2; }
     | '{' expression_list '}' { $$ = create_node("expression_list", 1, $2); }  // {1, 2, 3, 4, 5}
     | function { $$ = $1; }

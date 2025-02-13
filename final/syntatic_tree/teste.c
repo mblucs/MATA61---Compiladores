@@ -58,5 +58,10 @@ int main(){
 
     printf("\n");
 
+    // Condicional simples
+    if (flutuante > 15.0 && flutuante < 30.0) {
+        printf("O valor de 'flutuante' está entre 15.0 e 30.0.\n");
+    } 
+    
     return;
 }
