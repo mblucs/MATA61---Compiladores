@@ -16,3 +16,9 @@ int soma(int a, int b) {
 float media(float x, float y) {
     return (x + y) / 2;
 }
+
+// Função que não retorna nada
+void imprimirMensagem() {
+    printf("Executando a função imprimirMensagem.\n");
+    return;
+}

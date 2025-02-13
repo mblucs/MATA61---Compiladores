@@ -34,7 +34,6 @@ void yyerror(const char *s);
 %type <node> id id_list function parameter_list parameter
 
 %type <node> type comparison
-%type <node> argument_list
 
 
 %start program
@@ -56,6 +55,7 @@ statement:
     | if_statement { $$ = create_node("statement", 1, $1); }
     | loop_statement { $$ = create_node("statement", 1, $1); }
     | return_statement { $$ = create_node("statement", 1, $1); }
+    | function { $$ = create_node("statement", 1, $1); }
     ;
 
 declaration:
@@ -79,6 +79,9 @@ id:
     
 function:
     ID '(' parameter_list ')' '{' statement_list '}' { $$ = create_node("function_definition", 3, create_node("function_name", 1, create_node($1, 0)), $3, $6); }
+    | ID '(' parameter_list ')' ';' { $$ = create_node("function_declaration", 2, create_node("function_name", 1, create_node($1, 0)), $3); }
+    | ID '(' ')' '{' statement_list '}' { $$ = create_node("function_definition", 2, create_node("function_name", 1, create_node($1, 0)), $5); }
+    | ID '(' ')' ';' { $$ = create_node("function_declaration", 1, create_node("function_name", 1, create_node($1, 0))); }
     ;
 
 parameter_list:
@@ -87,7 +90,8 @@ parameter_list:
     ;
 
 parameter:
-    type ID { $$ = create_node("parameter", 2, $1, create_node("identifier", 1, create_node($2, 0))); }
+    type ID { $$ = create_node("parameter", 1, create_node("declaration", 2, $1, create_node("identifier", 1, create_node($2, 0)))); }
+    | expression { $$ = create_node("parameter", 1, $1); }
     ;
     
 
@@ -116,19 +120,15 @@ return_statement:
 expression:
     NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
     | id { $$ = $1; }
-    | id '(' argument_list ')' { $$ = create_node("function_call", 2, $1, $3); }
     | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }
     | expression '+' expression { $$ = create_node("add", 2, $1, $3); }
     | expression '-' expression { $$ = create_node("subtract", 2, $1, $3); }
     | expression '*' expression { $$ = create_node("multiply", 2, $1, $3); }
     | expression '/' expression { $$ = create_node("divide", 2, $1, $3); }
     | '(' expression ')' { $$ = $2; }
+    | function { $$ = $1; }
     ;
 
-argument_list:
-    expression { $$ = create_node("argument_list", 1, $1); }
-    | argument_list ',' expression { $$ = create_node("argument_list", 2, $1, $3); }
-    ;
 %%
 
 Node *create_node(char *label, int child_count, ...) {
