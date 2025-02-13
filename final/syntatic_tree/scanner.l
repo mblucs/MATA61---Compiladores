@@ -30,9 +30,9 @@ STRING_LITERAL         [^"]*\"
 "else"          { return ELSE; }
 "while"         { return WHILE; }
 "return"        { return RETURN; }
-{TYPE}          { yylval.id = strdup(yytext); return TYPE; }
-{IDENTIFIER}    { yylval.id = strdup(yytext); return ID; }
-{RELOP}         { yylval.id = strdup(yytext); return RELOP; }
+{TYPE}          { yylval.str = strdup(yytext); return TYPE; }
+{IDENTIFIER}    { yylval.str = strdup(yytext); return ID; }
+{RELOP}         { yylval.str = strdup(yytext); return RELOP; }
 {CONSTANT}      { yylval.num = strdup(yytext); return NUM; }
 {OPERATOR}      { return yytext[0]; }
 [ \t\n]+        { /* Ignore whitespace and newline */ }
@@ -44,7 +44,7 @@ STRING_LITERAL         [^"]*\"
 {QUOTE}        { BEGIN STRING_STATE; }
 <STRING_STATE>{STRING_LITERAL} { 
   BEGIN INITIAL;
-  yylval.id = strdup(yytext); return STRING_LITERAL;
+  yylval.str = strdup(yytext); return STRING_LITERAL;
 }
 .               { printf("Unknown character: %s\n", yytext); }
 

@@ -964,17 +964,17 @@ YY_RULE_SETUP
 case 5:
 YY_RULE_SETUP
 #line 33 "scanner.l"
-{ yylval.id = strdup(yytext); return TYPE; }
+{ yylval.str = strdup(yytext); return TYPE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 34 "scanner.l"
-{ yylval.id = strdup(yytext); return ID; }
+{ yylval.str = strdup(yytext); return ID; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 35 "scanner.l"
-{ yylval.id = strdup(yytext); return RELOP; }
+{ yylval.str = strdup(yytext); return RELOP; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
@@ -1032,7 +1032,7 @@ YY_RULE_SETUP
 #line 45 "scanner.l"
 { 
   BEGIN INITIAL;
-  yylval.id = strdup(yytext); return STRING_LITERAL;
+  yylval.str = strdup(yytext); return STRING_LITERAL;
 }
 	YY_BREAK
 case 18:

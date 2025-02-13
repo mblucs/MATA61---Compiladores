@@ -13,11 +13,11 @@ void yyerror(const char *s);
 
 %union {
     char* num;
-    char *id;
+    char *str;
     Node *node;
 }
 
-%token <id> ID NUM RELOP TYPE STRING_LITERAL
+%token <str> ID NUM RELOP TYPE STRING_LITERAL
 %token IF ELSE WHILE RETURN
 
 %left '+' '-'
@@ -31,7 +31,7 @@ void yyerror(const char *s);
 %type <node> if_statement loop_statement return_statement
 
 %type <node> attribution expression declaration 
-%type <node> id id_list function 
+%type <node> identifier id_list function 
 %type <node> parameter_list_opt parameter_list parameter 
 
 %type <node> type comparison
@@ -70,11 +70,11 @@ type:
     ;
 
 id_list:
-    id { $$ = $1; }
-    | id_list ',' id { $$ = create_node("id_list", 2, $1, $3); }
+    identifier { $$ = $1; }
+    | id_list ',' identifier { $$ = create_node("id_list", 2, $1, $3); }
     ;
 
-id:
+identifier:
     ID { $$ = create_node("identifier", 1, create_node($1, 0)); }
     | ID '[' NUM ']' { $$ = create_node("array", 2, create_node("identifier", 1, create_node($1, 0)), create_node("array_size", 1, create_node($3, 0))); }
     ;
@@ -100,7 +100,7 @@ parameter:
     ;
 
 attribution:
-    id '=' expression ';' { $$ = create_node("attribution", 2, $1, $3); }
+    identifier '=' expression ';' { $$ = create_node("attribution", 2, $1, $3); }
     ;
 
 if_statement:
@@ -123,7 +123,7 @@ return_statement:
 
 expression:
     NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
-    | id { $$ = $1; }
+    | identifier { $$ = $1; }
     | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }
     | expression '+' expression { $$ = create_node("add", 2, $1, $3); }
     | expression '-' expression { $$ = create_node("subtract", 2, $1, $3); }

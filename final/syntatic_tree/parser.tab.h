@@ -74,7 +74,7 @@ union YYSTYPE
 #line 14 "parser.y"
 
     char* num;
-    char *id;
+    char *str;
     Node *node;
 
 #line 81 "parser.tab.h"

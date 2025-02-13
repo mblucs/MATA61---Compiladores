@@ -26,6 +26,12 @@ void imprimirMensagem() {
 int main(){
     // Declaração e inicialização de variáveis numéricas
     int inteiro = 10;
+    float flutuante = 20.5;
+
+    
+    // Declaração e inicialização de vetores
+    // int vetorInteiros[5] = {1, 2, 3, 4, 5};
+    // float vetorFlutuantes[4] = {1.1, 2.2, 3.3, 4.4};
 
     return;
 }
