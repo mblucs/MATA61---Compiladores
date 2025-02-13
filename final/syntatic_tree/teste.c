@@ -22,3 +22,10 @@ void imprimirMensagem() {
     printf("Executando a função imprimirMensagem.\n");
     return;
 }
+
+int main(){
+    // Declaração e inicialização de variáveis numéricas
+    int inteiro = 10;
+
+    return;
+}

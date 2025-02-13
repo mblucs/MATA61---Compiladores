@@ -31,7 +31,8 @@ void yyerror(const char *s);
 %type <node> if_statement loop_statement return_statement
 
 %type <node> attribution expression declaration 
-%type <node> id id_list function parameter_list parameter
+%type <node> id id_list function 
+%type <node> parameter_list_opt parameter_list parameter 
 
 %type <node> type comparison
 
@@ -61,6 +62,7 @@ statement:
 declaration:
     type id_list ';' { $$ = create_node("declaration", 2, $1, $2); }
     | type function { $$ = create_node("declaration", 2, $1, $2); }
+    | type attribution { $$ = create_node("declaration", 2, $1, $2); }
     ;
 
 type:
@@ -78,10 +80,13 @@ id:
     ;
     
 function:
-    ID '(' parameter_list ')' '{' statement_list '}' { $$ = create_node("function_definition", 3, create_node("function_name", 1, create_node($1, 0)), $3, $6); }
-    | ID '(' parameter_list ')' ';' { $$ = create_node("function_declaration", 2, create_node("function_name", 1, create_node($1, 0)), $3); }
-    | ID '(' ')' '{' statement_list '}' { $$ = create_node("function_definition", 2, create_node("function_name", 1, create_node($1, 0)), $5); }
-    | ID '(' ')' ';' { $$ = create_node("function_declaration", 1, create_node("function_name", 1, create_node($1, 0))); }
+    ID '(' parameter_list_opt ')' '{' statement_list '}' { $$ = create_node("function_definition", 3, create_node("function_name", 1, create_node($1, 0)), $3, $6); }
+    | ID '(' parameter_list_opt ')' ';' { $$ = create_node("function_declaration", 2, create_node("function_name", 1, create_node($1, 0)), $3); }
+    ;
+
+parameter_list_opt:
+    parameter_list { $$ = $1; }
+    | /* empty */ { $$ = create_node("parameter_list", 0); }
     ;
 
 parameter_list:
@@ -93,7 +98,6 @@ parameter:
     type ID { $$ = create_node("parameter", 1, create_node("declaration", 2, $1, create_node("identifier", 1, create_node($2, 0)))); }
     | expression { $$ = create_node("parameter", 1, $1); }
     ;
-    
 
 attribution:
     id '=' expression ';' { $$ = create_node("attribution", 2, $1, $3); }
