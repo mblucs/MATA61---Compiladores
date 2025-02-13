@@ -18,17 +18,23 @@ void yyerror(const char *s);
 }
 
 %token <id> ID NUM RELOP TYPE STRING_LITERAL
-%token IF ELSE WHILE
+%token IF ELSE WHILE RETURN
+
+%left '+' '-'
+%left '*' '/'
+%right '='
+%nonassoc RELOP
 
 %type <node> program 
 
 %type <node> statement statement_list 
-%type <node> if_statement loop_statement 
+%type <node> if_statement loop_statement return_statement
 
 %type <node> attribution expression declaration 
 %type <node> id id_list function parameter_list parameter
 
 %type <node> type comparison
+%type <node> argument_list
 
 
 %start program
@@ -49,6 +55,7 @@ statement:
     | attribution { $$ = create_node("statement", 1, $1); }
     | if_statement { $$ = create_node("statement", 1, $1); }
     | loop_statement { $$ = create_node("statement", 1, $1); }
+    | return_statement { $$ = create_node("statement", 1, $1); }
     ;
 
 declaration:
@@ -101,13 +108,27 @@ loop_statement:
     WHILE '(' comparison ')' '{' statement_list '}' { $$ = create_node("loop_statement", 2, $3, $6); }
     ;
 
+return_statement:
+    RETURN expression ';' { $$ = create_node("return_statement", 1, $2); }
+    | RETURN ';' { $$ = create_node("return_statement", 0); }
+    ;
 
 expression:
     NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
     | id { $$ = $1; }
+    | id '(' argument_list ')' { $$ = create_node("function_call", 2, $1, $3); }
     | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }
+    | expression '+' expression { $$ = create_node("add", 2, $1, $3); }
+    | expression '-' expression { $$ = create_node("subtract", 2, $1, $3); }
+    | expression '*' expression { $$ = create_node("multiply", 2, $1, $3); }
+    | expression '/' expression { $$ = create_node("divide", 2, $1, $3); }
+    | '(' expression ')' { $$ = $2; }
     ;
 
+argument_list:
+    expression { $$ = create_node("argument_list", 1, $1); }
+    | argument_list ',' expression { $$ = create_node("argument_list", 2, $1, $3); }
+    ;
 %%
 
 Node *create_node(char *label, int child_count, ...) {

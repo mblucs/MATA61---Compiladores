@@ -61,7 +61,8 @@ extern int yydebug;
     STRING_LITERAL = 262,          /* STRING_LITERAL  */
     IF = 263,                      /* IF  */
     ELSE = 264,                    /* ELSE  */
-    WHILE = 265                    /* WHILE  */
+    WHILE = 265,                   /* WHILE  */
+    RETURN = 266                   /* RETURN  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -76,7 +77,7 @@ union YYSTYPE
     char *id;
     Node *node;
 
-#line 80 "parser.tab.h"
+#line 81 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

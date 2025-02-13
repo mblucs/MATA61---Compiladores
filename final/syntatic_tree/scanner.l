@@ -10,7 +10,6 @@
 %state COMMENT
 %state STRING_STATE
 
-NEWLINE                [\n]
 QUOTE                  ["]
 DIRECTIVE              ^#.*$
 LINE_COMMENT           \/\/[^\n]*
@@ -30,12 +29,13 @@ STRING_LITERAL         [^"]*\"
 "if"            { return IF; }
 "else"          { return ELSE; }
 "while"         { return WHILE; }
+"return"        { return RETURN; }
 {TYPE}          { yylval.id = strdup(yytext); return TYPE; }
 {IDENTIFIER}    { yylval.id = strdup(yytext); return ID; }
 {RELOP}         { yylval.id = strdup(yytext); return RELOP; }
 {CONSTANT}      { yylval.num = strdup(yytext); return NUM; }
 {OPERATOR}      { return yytext[0]; }
-[ \t\n]+        { /* Ignore whitespace */ }
+[ \t\n]+        { /* Ignore whitespace and newline */ }
 {DIRECTIVE}     { /* Ignore preprocessor directives */ }
 {LINE_COMMENT}  { /* Ignore single-line comments */ }
 {BEGIN_BLOCK_COMMENT} { BEGIN COMMENT; }

@@ -1,25 +1,18 @@
-// comment 1
-/* comment 2 */
-
-/*  
-a
-  */
-
+/*
+MATA61 - Compiladores - 2024.2
+Analisador Léxico - C
+*/
+#include <stdio.h>
 int x;
-float y[1];
 int a, b, c[2];
 
-if (x < 3) {
-    x = 1;
-} else {
-    x = 0;
+// Função que retorna um número inteiro
+int soma(int a, int b) {
+    return a + b;
 }
 
-void func1(int x){
-    x = 10;
-}
 
-void func2(int x, int y){
-    x = y;
-    y = 10;
+// Função que retorna um número flutuante
+float media(float x, float y) {
+    return (x + y) / 2;
 }
