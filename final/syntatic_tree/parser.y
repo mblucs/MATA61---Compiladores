@@ -115,8 +115,9 @@ attribution:
     ;
 
 if_statement:
-    IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}' { $$ = create_node("if_statement", 3, $3, $6, $10); }
-    | IF '(' comparison ')' '{' statement_list '}' { $$ = create_node("if_statement", 2, $3, $6); }
+    IF '(' comparison ')' '{' statement_list '}' { $$ = create_node("if_statement", 2, $3, $6); }
+    | IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}' { $$ = create_node("if_statement", 3, $3, $6, $10); }
+    | IF '(' comparison ')' '{' statement_list '}' ELSE if_statement { $$ = create_node("if_statement", 3, $3, $6, $9); }
     ;
 
 comparison:

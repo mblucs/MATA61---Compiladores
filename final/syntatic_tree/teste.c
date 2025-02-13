@@ -63,5 +63,15 @@ int main(){
         printf("O valor de 'flutuante' está entre 15.0 e 30.0.\n");
     } 
     
+    // Condicional composta
+    if (inteiro > 10) {
+        printf("O valor de 'inteiro' é maior que 10.\n");
+    } else if (inteiro < 10) {
+        printf("O valor de 'inteiro' é menor que 10.\n");
+    } else {
+        printf("O valor de 'inteiro' é igual a 10.\n");
+    }
+
+    
     return;
 }
