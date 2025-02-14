@@ -1024,68 +1024,68 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 43 "scanner.l"
+#line 44 "scanner.l"
 { yylval.str = strdup(yytext); return TYPE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 44 "scanner.l"
+#line 45 "scanner.l"
 { yylval.str = strdup(yytext); return ID; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 46 "scanner.l"
+#line 47 "scanner.l"
 { yylval.str = strdup(yytext); return RELATIONAL_OP; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 47 "scanner.l"
+#line 48 "scanner.l"
 { yylval.str = strdup(yytext); return LOGICAL_OP; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 48 "scanner.l"
+#line 49 "scanner.l"
 { yylval.str = strdup(yytext); return BITWISE_OP; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 49 "scanner.l"
+#line 50 "scanner.l"
 { yylval.str = strdup(yytext); return ASSIGN_OP; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 50 "scanner.l"
+#line 51 "scanner.l"
 { yylval.str = strdup(yytext); return INC_DEC_OP; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 51 "scanner.l"
+#line 52 "scanner.l"
 { yylval.str = strdup(yytext); return PREPROCESSOR_OP; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 52 "scanner.l"
+#line 53 "scanner.l"
 { yylval.str = strdup(yytext); return UNARY_OP; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 53 "scanner.l"
+#line 54 "scanner.l"
 { yylval.str = strdup(yytext); return TERNARY_OP; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 54 "scanner.l"
+#line 55 "scanner.l"
 { return yytext[0]; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 56 "scanner.l"
+#line 57 "scanner.l"
 { yylval.num = strdup(yytext); return NUM; }
 	YY_BREAK
 case 19:
 /* rule 19 can match eol */
 YY_RULE_SETUP
-#line 58 "scanner.l"
+#line 59 "scanner.l"
 { /* Ignore whitespace and newline */ }
 	YY_BREAK
 case 20:
@@ -1093,39 +1093,39 @@ case 20:
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 59 "scanner.l"
+#line 60 "scanner.l"
 { /* Ignore preprocessor directives */ }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 60 "scanner.l"
+#line 61 "scanner.l"
 { /* Ignore single-line comments */ }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 62 "scanner.l"
+#line 63 "scanner.l"
 { BEGIN COMMENT; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 63 "scanner.l"
+#line 64 "scanner.l"
 { BEGIN INITIAL; }
 	YY_BREAK
 case 24:
 /* rule 24 can match eol */
 YY_RULE_SETUP
-#line 64 "scanner.l"
+#line 65 "scanner.l"
 { /* Ignore block comment body */ }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 65 "scanner.l"
+#line 66 "scanner.l"
 { BEGIN STRING_STATE; }
 	YY_BREAK
 case 26:
 /* rule 26 can match eol */
 YY_RULE_SETUP
-#line 66 "scanner.l"
+#line 67 "scanner.l"
 { 
   BEGIN INITIAL;
   yylval.str = strdup(yytext); return STRING_LITERAL;
@@ -1133,18 +1133,18 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 70 "scanner.l"
+#line 71 "scanner.l"
 { printf("Unknown character: %s\n", yytext); }
 	YY_BREAK
 case YY_STATE_EOF(COMMENT):
-#line 72 "scanner.l"
+#line 73 "scanner.l"
 {                // Error for unclosed comment
     fprintf(stderr, "Error: Unclosed comment at line %d\n", yylineno);
     return 0;
 }
 	YY_BREAK
 case YY_STATE_EOF(STRING_STATE):
-#line 77 "scanner.l"
+#line 78 "scanner.l"
 {           // Error for unclosed string
     fprintf(stderr, "Error: Unclosed string at line %d\n", yylineno);
     return 0;
@@ -1152,7 +1152,7 @@ case YY_STATE_EOF(STRING_STATE):
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 82 "scanner.l"
+#line 83 "scanner.l"
 ECHO;
 	YY_BREAK
 #line 1159 "lex.yy.c"
@@ -2174,9 +2174,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 82 "scanner.l"
+#line 83 "scanner.l"
 
-/* 
-int yywrap() {
-    return 1;
-} */

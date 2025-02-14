@@ -8,6 +8,7 @@ Este projeto implementa um analisador sintático para uma linguagem específica,
 - `main` - Arquivo principal que executa o analisador.
 - `input.c` - Arquivo de entrada utilizado para testes do analisador.
 - `node.h` - Definições de estruturas de dados usadas na árvore sintática.
+- `output.txt` - Árvore sintática gerada após execução. 
 
 ### Analisador Léxico
 - `scanner.l` - Definição das regras do analisador léxico no Lex.
