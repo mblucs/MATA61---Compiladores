@@ -37,7 +37,8 @@ void yyerror(const char *s);
 %type <node> program 
 
 %type <node> statement statement_list 
-%type <node> if_statement loop_statement return_statement
+%type <node> if_statement else_if_opt
+%type <node> loop_statement return_statement
 
 %type <node> attribution  declaration function 
 %type <node> identifier id_list 
@@ -119,10 +120,13 @@ attribution:
     ;
 
 if_statement:
-    IF '(' comparison ')' '{' statement_list '}' { $$ = create_node("if_statement", 2, $3, $6); }
-    /* | IF '(' comparison ')' '{' statement_list '}' if_statement { $$ = create_node("if_statement", 3, $3, $6, $8); } */
-    | IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}' { $$ = create_node("if_statement", 3, $3, $6, $10); }
-    | IF '(' comparison ')' '{' statement_list '}' ELSE if_statement { $$ = create_node("if_statement", 3, $3, $6, $9); }
+    IF '(' comparison ')' '{' statement_list '}' else_if_opt { $$ = create_node("if_statement", 3, $3, $6, $8); }
+    ;
+
+else_if_opt:
+    ELSE '{' statement_list '}' { $$ = create_node("else_statement", 1, $3); }
+    | ELSE if_statement { $$ = $2; }
+    | { $$ = NULL; } // empty
     ;
 
 comparison:
@@ -131,11 +135,11 @@ comparison:
     | identifier { $$ = $1; }
     | function { $$ = $1; }
     /* TODO '(' comparison ')' */
-
+    ;
+    
 loop_statement:
     WHILE_LOOP '(' comparison ')' '{' statement_list '}' { $$ = create_node("loop_statement", 2, $3, $6); }
     | DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';' { $$ = create_node("loop_statement", 2, $3, $7); }
-    /* | FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' { $$ = create_node("loop_statement", 3, $3, $5, $7); } */
     | FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}' { $$ = create_node("loop_statement", 4, $3, $5, $7, $10); }
     ;
 

@@ -83,5 +83,27 @@ int main(){
     }
 
     
+    printf("\nRepetição usando WHILE:\n");
+    int j = 0;
+    while (j < 5) {
+        printf(j);
+        // printf("vetorInteiros[%d] = %d\n", j, vetorInteiros[j]);
+        j++;
+    }
+
+    
+    printf("\nRepetição usando DO WHILE:\n");
+    int k = 0;
+    do {
+        printf(k);
+        // printf("vetorInteiros[%d] = %d\n", k, vetorInteiros[k]);
+        k++;
+    } while (k < 5);
+    
+    printf("\n");
+
+    // Chamando funções definidas
+    imprimirMensagem();
+    
     return;
 }

@@ -48,82 +48,84 @@ Grammar
    28            | identifier ASSIGN_OP expression
    29            | identifier INC_DEC_OP
 
-   30 if_statement: IF '(' comparison ')' '{' statement_list '}'
-   31             | IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}'
-   32             | IF '(' comparison ')' '{' statement_list '}' ELSE if_statement
+   30 if_statement: IF '(' comparison ')' '{' statement_list '}' else_if_opt
 
-   33 comparison: expression RELATIONAL_OP expression
-   34           | comparison LOGICAL_OP comparison
-   35           | identifier
-   36           | function
+   31 else_if_opt: ELSE '{' statement_list '}'
+   32            | ELSE if_statement
+   33            | ε
 
-   37 loop_statement: WHILE_LOOP '(' comparison ')' '{' statement_list '}'
-   38               | DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';'
-   39               | FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}'
+   34 comparison: expression RELATIONAL_OP expression
+   35           | comparison LOGICAL_OP comparison
+   36           | identifier
+   37           | function
 
-   40 for_loop_initialization: declaration
-   41                        | attribution
+   38 loop_statement: WHILE_LOOP '(' comparison ')' '{' statement_list '}'
+   39               | DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';'
+   40               | FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}'
 
-   42 return_statement: RETURN expression ';'
-   43                 | RETURN ';'
+   41 for_loop_initialization: declaration
+   42                        | attribution
 
-   44 expression: NUM
-   45           | STRING_LITERAL
-   46           | identifier
-   47           | expression '+' expression
-   48           | expression '-' expression
-   49           | expression '*' expression
-   50           | expression '/' expression
-   51           | expression BITWISE_OP expression
-   52           | identifier INC_DEC_OP
-   53           | PREPROCESSOR_OP expression
-   54           | UNARY_OP expression
-   55           | expression TERNARY_OP expression ':' expression
-   56           | '(' expression ')'
-   57           | '{' expression_list '}'
-   58           | function
+   43 return_statement: RETURN expression ';'
+   44                 | RETURN ';'
 
-   59 expression_list: expression
-   60                | expression_list ',' expression
+   45 expression: NUM
+   46           | STRING_LITERAL
+   47           | identifier
+   48           | expression '+' expression
+   49           | expression '-' expression
+   50           | expression '*' expression
+   51           | expression '/' expression
+   52           | expression BITWISE_OP expression
+   53           | identifier INC_DEC_OP
+   54           | PREPROCESSOR_OP expression
+   55           | UNARY_OP expression
+   56           | expression TERNARY_OP expression ':' expression
+   57           | '(' expression ')'
+   58           | '{' expression_list '}'
+   59           | function
+
+   60 expression_list: expression
+   61                | expression_list ',' expression
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    '(' (40) 19 20 30 31 32 37 38 39 56
-    ')' (41) 19 20 30 31 32 37 38 39 56
-    '*' (42) 49
-    '+' (43) 47
-    ',' (44) 16 24 60
-    '-' (45) 48
-    '/' (47) 50
-    ':' (58) 55
-    ';' (59) 5 6 11 20 38 39 42 43
+    '(' (40) 19 20 30 38 39 40 57
+    ')' (41) 19 20 30 38 39 40 57
+    '*' (42) 50
+    '+' (43) 48
+    ',' (44) 16 24 61
+    '-' (45) 49
+    '/' (47) 51
+    ':' (58) 56
+    ';' (59) 5 6 11 20 39 40 43 44
     '=' (61) 27
     '[' (91) 18
     ']' (93) 18
-    '{' (123) 19 30 31 32 37 38 39 57
-    '}' (125) 19 30 31 32 37 38 39 57
+    '{' (123) 19 30 31 38 39 40 58
+    '}' (125) 19 30 31 38 39 40 58
     error (256)
     ID <str> (258) 17 18 19 20 25
-    NUM <str> (259) 18 44
-    RELATIONAL_OP <str> (260) 33
+    NUM <str> (259) 18 45
+    RELATIONAL_OP <str> (260) 34
     TYPE <str> (261) 14
-    STRING_LITERAL <str> (262) 45
-    IF (263) 30 31 32
+    STRING_LITERAL <str> (262) 46
+    IF (263) 30
     ELSE (264) 31 32
     WHILE (265)
-    RETURN (266) 42 43
-    LOGICAL_OP <str> (267) 34
-    BITWISE_OP <str> (268) 51
+    RETURN (266) 43 44
+    LOGICAL_OP <str> (267) 35
+    BITWISE_OP <str> (268) 52
     ASSIGN_OP <str> (269) 28
-    INC_DEC_OP <str> (270) 29 52
-    PREPROCESSOR_OP <str> (271) 53
-    UNARY_OP <str> (272) 54
-    TERNARY_OP <str> (273) 55
-    DO_LOOP (274) 38
-    WHILE_LOOP (275) 37 38
-    FOR_LOOP (276) 39
+    INC_DEC_OP <str> (270) 29 53
+    PREPROCESSOR_OP <str> (271) 54
+    UNARY_OP <str> (272) 55
+    TERNARY_OP <str> (273) 56
+    DO_LOOP (274) 39
+    WHILE_LOOP (275) 38 39
+    FOR_LOOP (276) 40
 
 
 Nonterminals, with rules where they appear
@@ -135,13 +137,13 @@ Nonterminals, with rules where they appear
         on right: 0
     statement_list <node> (38)
         on left: 2 3
-        on right: 1 3 19 30 31 32 37 38 39
+        on right: 1 3 19 30 31 38 39 40
     statement <node> (39)
         on left: 4 5 6 7 8 9 10
         on right: 2 3
     declaration <node> (40)
         on left: 11 12 13
-        on right: 4 5 40
+        on right: 4 5 41
     type <node> (41)
         on left: 14
         on right: 11 12 13 25
@@ -150,10 +152,10 @@ Nonterminals, with rules where they appear
         on right: 11 16
     identifier <node> (43)
         on left: 17 18
-        on right: 15 16 27 28 29 35 46 52
+        on right: 15 16 27 28 29 36 47 53
     function <node> (44)
         on left: 19 20
-        on right: 10 12 36 58
+        on right: 10 12 37 59
     parameter_list_opt <node> (45)
         on left: 21 22
         on right: 19 20
@@ -165,28 +167,31 @@ Nonterminals, with rules where they appear
         on right: 23 24
     attribution <node> (48)
         on left: 27 28 29
-        on right: 6 13 41
+        on right: 6 13 42
     if_statement <node> (49)
-        on left: 30 31 32
+        on left: 30
         on right: 7 32
-    comparison <node> (50)
-        on left: 33 34 35 36
-        on right: 30 31 32 34 37 38 39
-    loop_statement <node> (51)
-        on left: 37 38 39
+    else_if_opt <node> (50)
+        on left: 31 32 33
+        on right: 30
+    comparison <node> (51)
+        on left: 34 35 36 37
+        on right: 30 35 38 39 40
+    loop_statement <node> (52)
+        on left: 38 39 40
         on right: 8
-    for_loop_initialization <node> (52)
-        on left: 40 41
-        on right: 39
-    return_statement <node> (53)
-        on left: 42 43
+    for_loop_initialization <node> (53)
+        on left: 41 42
+        on right: 40
+    return_statement <node> (54)
+        on left: 43 44
         on right: 9
-    expression <node> (54)
-        on left: 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58
-        on right: 26 27 28 33 42 47 48 49 50 51 53 54 55 56 59 60
-    expression_list <node> (55)
-        on left: 59 60
-        on right: 57 60
+    expression <node> (55)
+        on left: 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59
+        on right: 26 27 28 34 43 48 49 50 51 52 54 55 56 57 60 61
+    expression_list <node> (56)
+        on left: 60 61
+        on right: 58 61
 
 
 State 0
@@ -236,17 +241,15 @@ State 2
 
 State 3
 
-   30 if_statement: IF • '(' comparison ')' '{' statement_list '}'
-   31             | IF • '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}'
-   32             | IF • '(' comparison ')' '{' statement_list '}' ELSE if_statement
+   30 if_statement: IF • '(' comparison ')' '{' statement_list '}' else_if_opt
 
     '('  shift, and go to state 21
 
 
 State 4
 
-   42 return_statement: RETURN • expression ';'
-   43                 | RETURN • ';'
+   43 return_statement: RETURN • expression ';'
+   44                 | RETURN • ';'
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -264,21 +267,21 @@ State 4
 
 State 5
 
-   38 loop_statement: DO_LOOP • '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';'
+   39 loop_statement: DO_LOOP • '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';'
 
     '{'  shift, and go to state 32
 
 
 State 6
 
-   37 loop_statement: WHILE_LOOP • '(' comparison ')' '{' statement_list '}'
+   38 loop_statement: WHILE_LOOP • '(' comparison ')' '{' statement_list '}'
 
     '('  shift, and go to state 33
 
 
 State 7
 
-   39 loop_statement: FOR_LOOP • '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}'
+   40 loop_statement: FOR_LOOP • '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}'
 
     '('  shift, and go to state 34
 
@@ -427,9 +430,7 @@ State 20
 
 State 21
 
-   30 if_statement: IF '(' • comparison ')' '{' statement_list '}'
-   31             | IF '(' • comparison ')' '{' statement_list '}' ELSE '{' statement_list '}'
-   32             | IF '(' • comparison ')' '{' statement_list '}' ELSE if_statement
+   30 if_statement: IF '(' • comparison ')' '{' statement_list '}' else_if_opt
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -447,21 +448,21 @@ State 21
 
 State 22
 
-   44 expression: NUM •
-
-    $default  reduce using rule 44 (expression)
-
-
-State 23
-
-   45 expression: STRING_LITERAL •
+   45 expression: NUM •
 
     $default  reduce using rule 45 (expression)
 
 
+State 23
+
+   46 expression: STRING_LITERAL •
+
+    $default  reduce using rule 46 (expression)
+
+
 State 24
 
-   53 expression: PREPROCESSOR_OP • expression
+   54 expression: PREPROCESSOR_OP • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -478,7 +479,7 @@ State 24
 
 State 25
 
-   54 expression: UNARY_OP • expression
+   55 expression: UNARY_OP • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -495,14 +496,14 @@ State 25
 
 State 26
 
-   43 return_statement: RETURN ';' •
+   44 return_statement: RETURN ';' •
 
-    $default  reduce using rule 43 (return_statement)
+    $default  reduce using rule 44 (return_statement)
 
 
 State 27
 
-   56 expression: '(' • expression ')'
+   57 expression: '(' • expression ')'
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -519,7 +520,7 @@ State 27
 
 State 28
 
-   57 expression: '{' • expression_list '}'
+   58 expression: '{' • expression_list '}'
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -537,30 +538,30 @@ State 28
 
 State 29
 
-   46 expression: identifier •
-   52           | identifier • INC_DEC_OP
+   47 expression: identifier •
+   53           | identifier • INC_DEC_OP
 
     INC_DEC_OP  shift, and go to state 61
 
-    $default  reduce using rule 46 (expression)
+    $default  reduce using rule 47 (expression)
 
 
 State 30
 
-   58 expression: function •
+   59 expression: function •
 
-    $default  reduce using rule 58 (expression)
+    $default  reduce using rule 59 (expression)
 
 
 State 31
 
-   42 return_statement: RETURN expression • ';'
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   43 return_statement: RETURN expression • ';'
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -573,7 +574,7 @@ State 31
 
 State 32
 
-   38 loop_statement: DO_LOOP '{' • statement_list '}' WHILE_LOOP '(' comparison ')' ';'
+   39 loop_statement: DO_LOOP '{' • statement_list '}' WHILE_LOOP '(' comparison ')' ';'
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -597,7 +598,7 @@ State 32
 
 State 33
 
-   37 loop_statement: WHILE_LOOP '(' • comparison ')' '{' statement_list '}'
+   38 loop_statement: WHILE_LOOP '(' • comparison ')' '{' statement_list '}'
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -615,7 +616,7 @@ State 33
 
 State 34
 
-   39 loop_statement: FOR_LOOP '(' • for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}'
+   40 loop_statement: FOR_LOOP '(' • for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}'
 
     ID    shift, and go to state 71
     TYPE  shift, and go to state 2
@@ -775,12 +776,12 @@ State 50
 State 51
 
    26 parameter: expression •
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -794,35 +795,33 @@ State 51
 
 State 52
 
-   35 comparison: identifier •
-   46 expression: identifier •
-   52           | identifier • INC_DEC_OP
+   36 comparison: identifier •
+   47 expression: identifier •
+   53           | identifier • INC_DEC_OP
 
     INC_DEC_OP  shift, and go to state 61
-
-    LOGICAL_OP  reduce using rule 35 (comparison)
-    ';'         reduce using rule 35 (comparison)
-    ')'         reduce using rule 35 (comparison)
-    $default    reduce using rule 46 (expression)
-
-
-State 53
-
-   36 comparison: function •
-   58 expression: function •
 
     LOGICAL_OP  reduce using rule 36 (comparison)
     ';'         reduce using rule 36 (comparison)
     ')'         reduce using rule 36 (comparison)
-    $default    reduce using rule 58 (expression)
+    $default    reduce using rule 47 (expression)
+
+
+State 53
+
+   37 comparison: function •
+   59 expression: function •
+
+    LOGICAL_OP  reduce using rule 37 (comparison)
+    ';'         reduce using rule 37 (comparison)
+    ')'         reduce using rule 37 (comparison)
+    $default    reduce using rule 59 (expression)
 
 
 State 54
 
-   30 if_statement: IF '(' comparison • ')' '{' statement_list '}'
-   31             | IF '(' comparison • ')' '{' statement_list '}' ELSE '{' statement_list '}'
-   32             | IF '(' comparison • ')' '{' statement_list '}' ELSE if_statement
-   34 comparison: comparison • LOGICAL_OP comparison
+   30 if_statement: IF '(' comparison • ')' '{' statement_list '}' else_if_opt
+   35 comparison: comparison • LOGICAL_OP comparison
 
     LOGICAL_OP  shift, and go to state 83
     ')'         shift, and go to state 84
@@ -830,13 +829,13 @@ State 54
 
 State 55
 
-   33 comparison: expression • RELATIONAL_OP expression
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   34 comparison: expression • RELATIONAL_OP expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     RELATIONAL_OP  shift, and go to state 85
     BITWISE_OP     shift, and go to state 62
@@ -849,43 +848,43 @@ State 55
 
 State 56
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   53           | PREPROCESSOR_OP expression •
-   55           | expression • TERNARY_OP expression ':' expression
-
-    TERNARY_OP  shift, and go to state 63
-
-    $default  reduce using rule 53 (expression)
-
-
-State 57
-
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   54           | UNARY_OP expression •
-   55           | expression • TERNARY_OP expression ':' expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   54           | PREPROCESSOR_OP expression •
+   56           | expression • TERNARY_OP expression ':' expression
 
     TERNARY_OP  shift, and go to state 63
 
     $default  reduce using rule 54 (expression)
 
 
+State 57
+
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   55           | UNARY_OP expression •
+   56           | expression • TERNARY_OP expression ':' expression
+
+    TERNARY_OP  shift, and go to state 63
+
+    $default  reduce using rule 55 (expression)
+
+
 State 58
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
-   56           | '(' expression • ')'
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
+   57           | '(' expression • ')'
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -898,13 +897,13 @@ State 58
 
 State 59
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
-   59 expression_list: expression •
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
+   60 expression_list: expression •
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -913,13 +912,13 @@ State 59
     '*'         shift, and go to state 66
     '/'         shift, and go to state 67
 
-    $default  reduce using rule 59 (expression_list)
+    $default  reduce using rule 60 (expression_list)
 
 
 State 60
 
-   57 expression: '{' expression_list • '}'
-   60 expression_list: expression_list • ',' expression
+   58 expression: '{' expression_list • '}'
+   61 expression_list: expression_list • ',' expression
 
     ','  shift, and go to state 87
     '}'  shift, and go to state 88
@@ -927,14 +926,14 @@ State 60
 
 State 61
 
-   52 expression: identifier INC_DEC_OP •
+   53 expression: identifier INC_DEC_OP •
 
-    $default  reduce using rule 52 (expression)
+    $default  reduce using rule 53 (expression)
 
 
 State 62
 
-   51 expression: expression BITWISE_OP • expression
+   52 expression: expression BITWISE_OP • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -951,7 +950,7 @@ State 62
 
 State 63
 
-   55 expression: expression TERNARY_OP • expression ':' expression
+   56 expression: expression TERNARY_OP • expression ':' expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -968,7 +967,7 @@ State 63
 
 State 64
 
-   47 expression: expression '+' • expression
+   48 expression: expression '+' • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -985,7 +984,7 @@ State 64
 
 State 65
 
-   48 expression: expression '-' • expression
+   49 expression: expression '-' • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1002,7 +1001,7 @@ State 65
 
 State 66
 
-   49 expression: expression '*' • expression
+   50 expression: expression '*' • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1019,7 +1018,7 @@ State 66
 
 State 67
 
-   50 expression: expression '/' • expression
+   51 expression: expression '/' • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1036,15 +1035,15 @@ State 67
 
 State 68
 
-   42 return_statement: RETURN expression ';' •
+   43 return_statement: RETURN expression ';' •
 
-    $default  reduce using rule 42 (return_statement)
+    $default  reduce using rule 43 (return_statement)
 
 
 State 69
 
     3 statement_list: statement_list • statement
-   38 loop_statement: DO_LOOP '{' statement_list • '}' WHILE_LOOP '(' comparison ')' ';'
+   39 loop_statement: DO_LOOP '{' statement_list • '}' WHILE_LOOP '(' comparison ')' ';'
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -1068,8 +1067,8 @@ State 69
 
 State 70
 
-   34 comparison: comparison • LOGICAL_OP comparison
-   37 loop_statement: WHILE_LOOP '(' comparison • ')' '{' statement_list '}'
+   35 comparison: comparison • LOGICAL_OP comparison
+   38 loop_statement: WHILE_LOOP '(' comparison • ')' '{' statement_list '}'
 
     LOGICAL_OP  shift, and go to state 83
     ')'         shift, and go to state 96
@@ -1087,21 +1086,21 @@ State 71
 
 State 72
 
-   40 for_loop_initialization: declaration •
-
-    $default  reduce using rule 40 (for_loop_initialization)
-
-
-State 73
-
-   41 for_loop_initialization: attribution •
+   41 for_loop_initialization: declaration •
 
     $default  reduce using rule 41 (for_loop_initialization)
 
 
+State 73
+
+   42 for_loop_initialization: attribution •
+
+    $default  reduce using rule 42 (for_loop_initialization)
+
+
 State 74
 
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization • ';' comparison ';' for_loop_initialization ')' '{' statement_list '}'
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization • ';' comparison ';' for_loop_initialization ')' '{' statement_list '}'
 
     ';'  shift, and go to state 97
 
@@ -1125,12 +1124,12 @@ State 76
 State 77
 
    28 attribution: identifier ASSIGN_OP expression •
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -1145,12 +1144,12 @@ State 77
 State 78
 
    27 attribution: identifier '=' expression •
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -1207,7 +1206,7 @@ State 82
 
 State 83
 
-   34 comparison: comparison LOGICAL_OP • comparison
+   35 comparison: comparison LOGICAL_OP • comparison
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1225,16 +1224,14 @@ State 83
 
 State 84
 
-   30 if_statement: IF '(' comparison ')' • '{' statement_list '}'
-   31             | IF '(' comparison ')' • '{' statement_list '}' ELSE '{' statement_list '}'
-   32             | IF '(' comparison ')' • '{' statement_list '}' ELSE if_statement
+   30 if_statement: IF '(' comparison ')' • '{' statement_list '}' else_if_opt
 
     '{'  shift, and go to state 103
 
 
 State 85
 
-   33 comparison: expression RELATIONAL_OP • expression
+   34 comparison: expression RELATIONAL_OP • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1251,14 +1248,14 @@ State 85
 
 State 86
 
-   56 expression: '(' expression ')' •
+   57 expression: '(' expression ')' •
 
-    $default  reduce using rule 56 (expression)
+    $default  reduce using rule 57 (expression)
 
 
 State 87
 
-   60 expression_list: expression_list ',' • expression
+   61 expression_list: expression_list ',' • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1275,37 +1272,37 @@ State 87
 
 State 88
 
-   57 expression: '{' expression_list '}' •
+   58 expression: '{' expression_list '}' •
 
-    $default  reduce using rule 57 (expression)
+    $default  reduce using rule 58 (expression)
 
 
 State 89
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   51           | expression BITWISE_OP expression •
-   55           | expression • TERNARY_OP expression ':' expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   52           | expression BITWISE_OP expression •
+   56           | expression • TERNARY_OP expression ':' expression
 
     TERNARY_OP  shift, and go to state 63
 
     BITWISE_OP  error (nonassociative)
 
-    $default  reduce using rule 51 (expression)
+    $default  reduce using rule 52 (expression)
 
 
 State 90
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
-   55           | expression TERNARY_OP expression • ':' expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
+   56           | expression TERNARY_OP expression • ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -1318,31 +1315,13 @@ State 90
 
 State 91
 
-   47 expression: expression • '+' expression
-   47           | expression '+' expression •
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
-
-    BITWISE_OP  shift, and go to state 62
-    TERNARY_OP  shift, and go to state 63
-    '*'         shift, and go to state 66
-    '/'         shift, and go to state 67
-
-    $default  reduce using rule 47 (expression)
-
-
-State 92
-
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   48           | expression '-' expression •
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   48 expression: expression • '+' expression
+   48           | expression '+' expression •
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -1352,31 +1331,33 @@ State 92
     $default  reduce using rule 48 (expression)
 
 
-State 93
+State 92
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   49           | expression '*' expression •
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   49           | expression '-' expression •
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
+    '*'         shift, and go to state 66
+    '/'         shift, and go to state 67
 
     $default  reduce using rule 49 (expression)
 
 
-State 94
+State 93
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   50           | expression '/' expression •
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   50           | expression '*' expression •
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -1384,23 +1365,39 @@ State 94
     $default  reduce using rule 50 (expression)
 
 
+State 94
+
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   51           | expression '/' expression •
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
+
+    BITWISE_OP  shift, and go to state 62
+    TERNARY_OP  shift, and go to state 63
+
+    $default  reduce using rule 51 (expression)
+
+
 State 95
 
-   38 loop_statement: DO_LOOP '{' statement_list '}' • WHILE_LOOP '(' comparison ')' ';'
+   39 loop_statement: DO_LOOP '{' statement_list '}' • WHILE_LOOP '(' comparison ')' ';'
 
     WHILE_LOOP  shift, and go to state 107
 
 
 State 96
 
-   37 loop_statement: WHILE_LOOP '(' comparison ')' • '{' statement_list '}'
+   38 loop_statement: WHILE_LOOP '(' comparison ')' • '{' statement_list '}'
 
     '{'  shift, and go to state 108
 
 
 State 97
 
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization ';' • comparison ';' for_loop_initialization ')' '{' statement_list '}'
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization ';' • comparison ';' for_loop_initialization ')' '{' statement_list '}'
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1463,19 +1460,17 @@ State 101
 
 State 102
 
-   34 comparison: comparison • LOGICAL_OP comparison
-   34           | comparison LOGICAL_OP comparison •
+   35 comparison: comparison • LOGICAL_OP comparison
+   35           | comparison LOGICAL_OP comparison •
 
     LOGICAL_OP  error (nonassociative)
 
-    $default  reduce using rule 34 (comparison)
+    $default  reduce using rule 35 (comparison)
 
 
 State 103
 
-   30 if_statement: IF '(' comparison ')' '{' • statement_list '}'
-   31             | IF '(' comparison ')' '{' • statement_list '}' ELSE '{' statement_list '}'
-   32             | IF '(' comparison ')' '{' • statement_list '}' ELSE if_statement
+   30 if_statement: IF '(' comparison ')' '{' • statement_list '}' else_if_opt
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -1499,13 +1494,13 @@ State 103
 
 State 104
 
-   33 comparison: expression RELATIONAL_OP expression •
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
+   34 comparison: expression RELATIONAL_OP expression •
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -1514,18 +1509,18 @@ State 104
     '*'         shift, and go to state 66
     '/'         shift, and go to state 67
 
-    $default  reduce using rule 33 (comparison)
+    $default  reduce using rule 34 (comparison)
 
 
 State 105
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
-   60 expression_list: expression_list ',' expression •
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
+   61 expression_list: expression_list ',' expression •
 
     BITWISE_OP  shift, and go to state 62
     TERNARY_OP  shift, and go to state 63
@@ -1534,12 +1529,12 @@ State 105
     '*'         shift, and go to state 66
     '/'         shift, and go to state 67
 
-    $default  reduce using rule 60 (expression_list)
+    $default  reduce using rule 61 (expression_list)
 
 
 State 106
 
-   55 expression: expression TERNARY_OP expression ':' • expression
+   56 expression: expression TERNARY_OP expression ':' • expression
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1556,14 +1551,14 @@ State 106
 
 State 107
 
-   38 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP • '(' comparison ')' ';'
+   39 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP • '(' comparison ')' ';'
 
     '('  shift, and go to state 113
 
 
 State 108
 
-   37 loop_statement: WHILE_LOOP '(' comparison ')' '{' • statement_list '}'
+   38 loop_statement: WHILE_LOOP '(' comparison ')' '{' • statement_list '}'
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -1587,8 +1582,8 @@ State 108
 
 State 109
 
-   34 comparison: comparison • LOGICAL_OP comparison
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison • ';' for_loop_initialization ')' '{' statement_list '}'
+   35 comparison: comparison • LOGICAL_OP comparison
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison • ';' for_loop_initialization ')' '{' statement_list '}'
 
     LOGICAL_OP  shift, and go to state 83
     ';'         shift, and go to state 115
@@ -1622,9 +1617,7 @@ State 110
 State 111
 
     3 statement_list: statement_list • statement
-   30 if_statement: IF '(' comparison ')' '{' statement_list • '}'
-   31             | IF '(' comparison ')' '{' statement_list • '}' ELSE '{' statement_list '}'
-   32             | IF '(' comparison ')' '{' statement_list • '}' ELSE if_statement
+   30 if_statement: IF '(' comparison ')' '{' statement_list • '}' else_if_opt
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -1648,22 +1641,22 @@ State 111
 
 State 112
 
-   47 expression: expression • '+' expression
-   48           | expression • '-' expression
-   49           | expression • '*' expression
-   50           | expression • '/' expression
-   51           | expression • BITWISE_OP expression
-   55           | expression • TERNARY_OP expression ':' expression
-   55           | expression TERNARY_OP expression ':' expression •
+   48 expression: expression • '+' expression
+   49           | expression • '-' expression
+   50           | expression • '*' expression
+   51           | expression • '/' expression
+   52           | expression • BITWISE_OP expression
+   56           | expression • TERNARY_OP expression ':' expression
+   56           | expression TERNARY_OP expression ':' expression •
 
     TERNARY_OP  shift, and go to state 63
 
-    $default  reduce using rule 55 (expression)
+    $default  reduce using rule 56 (expression)
 
 
 State 113
 
-   38 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP '(' • comparison ')' ';'
+   39 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP '(' • comparison ')' ';'
 
     ID               shift, and go to state 1
     NUM              shift, and go to state 22
@@ -1682,7 +1675,7 @@ State 113
 State 114
 
     3 statement_list: statement_list • statement
-   37 loop_statement: WHILE_LOOP '(' comparison ')' '{' statement_list • '}'
+   38 loop_statement: WHILE_LOOP '(' comparison ')' '{' statement_list • '}'
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -1706,7 +1699,7 @@ State 114
 
 State 115
 
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' • for_loop_initialization ')' '{' statement_list '}'
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' • for_loop_initialization ')' '{' statement_list '}'
 
     ID    shift, and go to state 71
     TYPE  shift, and go to state 2
@@ -1727,104 +1720,73 @@ State 116
 
 State 117
 
-   30 if_statement: IF '(' comparison ')' '{' statement_list '}' •
-   31             | IF '(' comparison ')' '{' statement_list '}' • ELSE '{' statement_list '}'
-   32             | IF '(' comparison ')' '{' statement_list '}' • ELSE if_statement
+   30 if_statement: IF '(' comparison ')' '{' statement_list '}' • else_if_opt
 
     ELSE  shift, and go to state 121
 
-    $default  reduce using rule 30 (if_statement)
+    $default  reduce using rule 33 (else_if_opt)
+
+    else_if_opt  go to state 122
 
 
 State 118
 
-   34 comparison: comparison • LOGICAL_OP comparison
-   38 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison • ')' ';'
+   35 comparison: comparison • LOGICAL_OP comparison
+   39 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison • ')' ';'
 
     LOGICAL_OP  shift, and go to state 83
-    ')'         shift, and go to state 122
+    ')'         shift, and go to state 123
 
 
 State 119
 
-   37 loop_statement: WHILE_LOOP '(' comparison ')' '{' statement_list '}' •
-
-    $default  reduce using rule 37 (loop_statement)
-
-
-State 120
-
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization • ')' '{' statement_list '}'
-
-    ')'  shift, and go to state 123
-
-
-State 121
-
-   31 if_statement: IF '(' comparison ')' '{' statement_list '}' ELSE • '{' statement_list '}'
-   32             | IF '(' comparison ')' '{' statement_list '}' ELSE • if_statement
-
-    IF   shift, and go to state 3
-    '{'  shift, and go to state 124
-
-    if_statement  go to state 125
-
-
-State 122
-
-   38 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' • ';'
-
-    ';'  shift, and go to state 126
-
-
-State 123
-
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' • '{' statement_list '}'
-
-    '{'  shift, and go to state 127
-
-
-State 124
-
-   31 if_statement: IF '(' comparison ')' '{' statement_list '}' ELSE '{' • statement_list '}'
-
-    ID          shift, and go to state 1
-    TYPE        shift, and go to state 2
-    IF          shift, and go to state 3
-    RETURN      shift, and go to state 4
-    DO_LOOP     shift, and go to state 5
-    WHILE_LOOP  shift, and go to state 6
-    FOR_LOOP    shift, and go to state 7
-
-    statement_list    go to state 128
-    statement         go to state 10
-    declaration       go to state 11
-    type              go to state 12
-    identifier        go to state 13
-    function          go to state 14
-    attribution       go to state 15
-    if_statement      go to state 16
-    loop_statement    go to state 17
-    return_statement  go to state 18
-
-
-State 125
-
-   32 if_statement: IF '(' comparison ')' '{' statement_list '}' ELSE if_statement •
-
-    $default  reduce using rule 32 (if_statement)
-
-
-State 126
-
-   38 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';' •
+   38 loop_statement: WHILE_LOOP '(' comparison ')' '{' statement_list '}' •
 
     $default  reduce using rule 38 (loop_statement)
 
 
-State 127
+State 120
 
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' • statement_list '}'
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization • ')' '{' statement_list '}'
+
+    ')'  shift, and go to state 124
+
+
+State 121
+
+   31 else_if_opt: ELSE • '{' statement_list '}'
+   32            | ELSE • if_statement
+
+    IF   shift, and go to state 3
+    '{'  shift, and go to state 125
+
+    if_statement  go to state 126
+
+
+State 122
+
+   30 if_statement: IF '(' comparison ')' '{' statement_list '}' else_if_opt •
+
+    $default  reduce using rule 30 (if_statement)
+
+
+State 123
+
+   39 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' • ';'
+
+    ';'  shift, and go to state 127
+
+
+State 124
+
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' • '{' statement_list '}'
+
+    '{'  shift, and go to state 128
+
+
+State 125
+
+   31 else_if_opt: ELSE '{' • statement_list '}'
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -1846,10 +1808,23 @@ State 127
     return_statement  go to state 18
 
 
+State 126
+
+   32 else_if_opt: ELSE if_statement •
+
+    $default  reduce using rule 32 (else_if_opt)
+
+
+State 127
+
+   39 loop_statement: DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';' •
+
+    $default  reduce using rule 39 (loop_statement)
+
+
 State 128
 
-    3 statement_list: statement_list • statement
-   31 if_statement: IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list • '}'
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' • statement_list '}'
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -1858,9 +1833,9 @@ State 128
     DO_LOOP     shift, and go to state 5
     WHILE_LOOP  shift, and go to state 6
     FOR_LOOP    shift, and go to state 7
-    '}'         shift, and go to state 130
 
-    statement         go to state 36
+    statement_list    go to state 130
+    statement         go to state 10
     declaration       go to state 11
     type              go to state 12
     identifier        go to state 13
@@ -1874,7 +1849,7 @@ State 128
 State 129
 
     3 statement_list: statement_list • statement
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list • '}'
+   31 else_if_opt: ELSE '{' statement_list • '}'
 
     ID          shift, and go to state 1
     TYPE        shift, and go to state 2
@@ -1898,13 +1873,38 @@ State 129
 
 State 130
 
-   31 if_statement: IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}' •
+    3 statement_list: statement_list • statement
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list • '}'
 
-    $default  reduce using rule 31 (if_statement)
+    ID          shift, and go to state 1
+    TYPE        shift, and go to state 2
+    IF          shift, and go to state 3
+    RETURN      shift, and go to state 4
+    DO_LOOP     shift, and go to state 5
+    WHILE_LOOP  shift, and go to state 6
+    FOR_LOOP    shift, and go to state 7
+    '}'         shift, and go to state 132
+
+    statement         go to state 36
+    declaration       go to state 11
+    type              go to state 12
+    identifier        go to state 13
+    function          go to state 14
+    attribution       go to state 15
+    if_statement      go to state 16
+    loop_statement    go to state 17
+    return_statement  go to state 18
 
 
 State 131
 
-   39 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}' •
+   31 else_if_opt: ELSE '{' statement_list '}' •
 
-    $default  reduce using rule 39 (loop_statement)
+    $default  reduce using rule 31 (else_if_opt)
+
+
+State 132
+
+   40 loop_statement: FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}' •
+
+    $default  reduce using rule 40 (loop_statement)
