@@ -40,6 +40,7 @@ TERNARY_OP             "\?"
 "while"             { return WHILE_LOOP; }
 "for"               { return FOR_LOOP; }
 "do"                { return DO_LOOP; }
+
 {TYPE}              { yylval.str = strdup(yytext); return TYPE; }
 {IDENTIFIER}        { yylval.str = strdup(yytext); return ID; }
 
@@ -80,7 +81,3 @@ TERNARY_OP             "\?"
 }
 
 %%
-/* 
-int yywrap() {
-    return 1;
-} */
