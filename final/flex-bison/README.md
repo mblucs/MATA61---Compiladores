@@ -16,7 +16,6 @@ Este projeto implementa um analisador sintático para uma linguagem específica,
 
 ### Analisador Sintático
 - `parser.y` - Definição das regras da gramática no Yacc.
-- `parser copy.y` - Cópia de segurança do arquivo `parser.y`.
 - `parser.output` - Arquivo gerado pelo Bison contendo detalhes da análise da gramática, incluindo a tabela de estados do parser LR, regras reduzidas e conflitos detectados.
 - `parser.tab.c` - Código gerado pelo Yacc para o analisador sintático.
 - `parser.tab.h` - Cabeçalho gerado pelo Yacc contendo definições auxiliares.
