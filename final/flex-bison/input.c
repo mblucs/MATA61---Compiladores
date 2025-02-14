@@ -17,26 +17,31 @@ float media(float x, float y) {
 // Função que não retorna nada
 void imprimirMensagem() {
     printf("Executando a função imprimirMensagem.\n");
+    return;
 }
 
-int main() {
+int main(){
     // Declaração e inicialização de variáveis numéricas
     int inteiro = 10;
     float flutuante = 20.5;
 
+    
     // Declaração e inicialização de vetores
     int vetorInteiros[5] = {1, 2, 3, 4, 5};
     float vetorFlutuantes[4] = {1.1, 2.2, 3.3, 4.4};
 
+    
     // Acesso e atribuição às variáveis e elementos do vetor
     inteiro = 5;
     vetorInteiros[1] = inteiro * 2;
-    vetorInteiros[2] = soma(inteiro, vetorInteiros[3]);
+    vetorInteiros[0] = vetorInteiros[0];
+    // vetorInteiros[2] = soma(inteiro, vetorInteiros[3]); //TODO: attribution: identifier '=' expression | expression = function
 
-    flutuante += 0.2;
+    // flutuante += 0.2;
     vetorFlutuantes[1] = flutuante / 4;
-    vetorFlutuantes[2] = media(vetorFlutuantes[3], inteiro*0.5);
+    // vetorFlutuantes[2] = media(vetorFlutuantes[3], inteiro*0.5);
 
+    
     // Imprimindo os valores atualizados
     printf("inteiro = %d\n", inteiro);
     printf("vetorInteiros[1] = %d\n", vetorInteiros[1]);
@@ -68,29 +73,35 @@ int main() {
 
     // Comandos de repetição
     printf("Repetição usando FOR:\n");
-    for (int i = 0; i < 5; i++) {
-        printf("vetorInteiros[%d] = %d\n", i, vetorInteiros[i]);
+
+    for (int i = 0 ; i < 5 ; i++) {
+        printf(i);
+        //TODO: printf("vetorInteiros[%d] = %d\n", i, vetorInteiros[i]);
     }
 
+    
     printf("\nRepetição usando WHILE:\n");
     int j = 0;
     while (j < 5) {
-        printf("vetorInteiros[%d] = %d\n", j, vetorInteiros[j]);
+        printf(j);
+        // printf("vetorInteiros[%d] = %d\n", j, vetorInteiros[j]);
         j++;
     }
 
+    
     printf("\nRepetição usando DO WHILE:\n");
     int k = 0;
     do {
-        printf("vetorInteiros[%d] = %d\n", k, vetorInteiros[k]);
+        printf(k);
+        // printf("vetorInteiros[%d] = %d\n", k, vetorInteiros[k]);
         k++;
     } while (k < 5);
-
+    
     printf("\n");
 
     // Chamando funções definidas
     imprimirMensagem();
-
+    
     int resultadoSoma = soma(10, 20);
     printf("Resultado após executar a função soma: %d.\n", resultadoSoma);
 

@@ -1,8 +1,3 @@
-Terminals unused in grammar
-
-    WHILE
-
-
 Grammar
 
     0 $accept: program $end
@@ -114,82 +109,81 @@ Terminals, with rules where they appear
     STRING_LITERAL <str> (262) 46
     IF (263) 30
     ELSE (264) 31 32
-    WHILE (265)
-    RETURN (266) 43 44
-    LOGICAL_OP <str> (267) 35
-    BITWISE_OP <str> (268) 52
-    ASSIGN_OP <str> (269) 28
-    INC_DEC_OP <str> (270) 29 53
-    PREPROCESSOR_OP <str> (271) 54
-    UNARY_OP <str> (272) 55
-    TERNARY_OP <str> (273) 56
-    DO_LOOP (274) 39
-    WHILE_LOOP (275) 38 39
-    FOR_LOOP (276) 40
+    RETURN (265) 43 44
+    LOGICAL_OP <str> (266) 35
+    BITWISE_OP <str> (267) 52
+    ASSIGN_OP <str> (268) 28
+    INC_DEC_OP <str> (269) 29 53
+    PREPROCESSOR_OP <str> (270) 54
+    UNARY_OP <str> (271) 55
+    TERNARY_OP <str> (272) 56
+    DO_LOOP (273) 39
+    WHILE_LOOP (274) 38 39
+    FOR_LOOP (275) 40
 
 
 Nonterminals, with rules where they appear
 
-    $accept (36)
+    $accept (35)
         on left: 0
-    program <node> (37)
+    program <node> (36)
         on left: 1
         on right: 0
-    statement_list <node> (38)
+    statement_list <node> (37)
         on left: 2 3
         on right: 1 3 19 30 31 38 39 40
-    statement <node> (39)
+    statement <node> (38)
         on left: 4 5 6 7 8 9 10
         on right: 2 3
-    declaration <node> (40)
+    declaration <node> (39)
         on left: 11 12 13
         on right: 4 5 41
-    type <node> (41)
+    type <node> (40)
         on left: 14
         on right: 11 12 13 25
-    id_list <node> (42)
+    id_list <node> (41)
         on left: 15 16
         on right: 11 16
-    identifier <node> (43)
+    identifier <node> (42)
         on left: 17 18
         on right: 15 16 27 28 29 36 47 53
-    function <node> (44)
+    function <node> (43)
         on left: 19 20
         on right: 10 12 37 59
-    parameter_list_opt <node> (45)
+    parameter_list_opt <node> (44)
         on left: 21 22
         on right: 19 20
-    parameter_list <node> (46)
+    parameter_list <node> (45)
         on left: 23 24
         on right: 21 24
-    parameter <node> (47)
+    parameter <node> (46)
         on left: 25 26
         on right: 23 24
-    attribution <node> (48)
+    attribution <node> (47)
         on left: 27 28 29
         on right: 6 13 42
-    if_statement <node> (49)
+    if_statement <node> (48)
         on left: 30
         on right: 7 32
-    else_if_opt <node> (50)
+    else_if_opt <node> (49)
         on left: 31 32 33
         on right: 30
-    comparison <node> (51)
+    comparison <node> (50)
         on left: 34 35 36 37
         on right: 30 35 38 39 40
-    loop_statement <node> (52)
+    loop_statement <node> (51)
         on left: 38 39 40
         on right: 8
-    for_loop_initialization <node> (53)
+    for_loop_initialization <node> (52)
         on left: 41 42
         on right: 40
-    return_statement <node> (54)
+    return_statement <node> (53)
         on left: 43 44
         on right: 9
-    expression <node> (55)
+    expression <node> (54)
         on left: 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59
         on right: 26 27 28 34 43 48 49 50 51 52 54 55 56 57 60 61
-    expression_list <node> (56)
+    expression_list <node> (55)
         on left: 60 61
         on right: 58 61
 

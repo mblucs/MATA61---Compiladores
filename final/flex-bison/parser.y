@@ -7,28 +7,48 @@
 
 Node *root;
 
-int yylex(void);
+int yylex();
 void yyerror(const char *s);
-
 %}
 
 %union {
     char* num;
-    char *string;
-    char *id;
+    char *str;
     Node *node;
 }
 
-%token <id> NUMBER 
-%token <string> KEYWORD
-%token <string> IDENTIFIER
-%token <string> STRING_LITERAL
-%token OPERATOR COMPARE
+%token <str> ID NUM RELATIONAL_OP TYPE STRING_LITERAL
+%token IF ELSE RETURN
+%token <str> LOGICAL_OP BITWISE_OP ASSIGN_OP INC_DEC_OP PREPROCESSOR_OP UNARY_OP TERNARY_OP
+%token DO_LOOP WHILE_LOOP FOR_LOOP 
 
+%left '+' '-'
+%left '*' '/'
 %right '='
-%left '+' '-' '*' '/'
+%nonassoc RELATIONAL_OP
+%nonassoc LOGICAL_OP
+%nonassoc BITWISE_OP
+%nonassoc ASSIGN_OP
+%nonassoc INC_DEC_OP
+%nonassoc PREPROCESSOR_OP
+%nonassoc UNARY_OP
+%right TERNARY_OP ':'  
 
-%type <node> program statement_list statement declaration keyword_expr identifier_expr expression string_expr type
+%type <node> program 
+
+%type <node> statement statement_list 
+%type <node> if_statement else_if_opt
+%type <node> loop_statement return_statement
+
+%type <node> attribution  declaration function 
+%type <node> identifier id_list 
+%type <node> parameter_list_opt parameter_list parameter 
+%type <node> expression_list expression
+
+%type <node> type comparison 
+
+%type <node> for_loop_initialization
+
 
 %start program
 
@@ -45,40 +65,116 @@ statement_list:
 
 statement:
     declaration { $$ = create_node("statement", 1, $1); }
-    | keyword_expr { $$ = $1; }
-    | identifier_expr { $$ = $1; }
-    | expression { $$ = $1; }
-    | string_expr { $$ = $1; }
+    | declaration ';' { $$ = create_node("statement", 1, $1); }
+    | attribution ';' { $$ = create_node("statement", 1, $1); }
+    | if_statement { $$ = create_node("statement", 1, $1); }
+    | loop_statement { $$ = create_node("statement", 1, $1); }
+    | return_statement { $$ = create_node("statement", 1, $1); }
+    | function { $$ = create_node("statement", 1, $1); }
     ;
 
 declaration:
-    type IDENTIFIER ';' { $$ = create_node("declaration", 2, $1, create_node($2, 0)); }
+    type id_list ';' { $$ = create_node("declaration", 2, $1, $2); }
+    | type function { $$ = create_node("declaration", 2, $1, $2); }
+    | type attribution { $$ = create_node("declaration", 2, $1, $2); }
     ;
 
 type:
-    KEYWORD { $$ = create_node($1, 0); }
-    /* INT { $$ = create_node("INT", 0); }
-    | FLOAT { $$ = create_node("FLOAT", 0); } */
+    TYPE { $$ = create_node("type_specifier", 1, create_node($1, 0)); }   //INT | FLOAT | LONG | BOOL | CHAR | CONST | DOUBLE | ENUM | VOID
     ;
 
-keyword_expr:
-    KEYWORD { $$ = create_node($1, 0); }
+id_list:
+    identifier { $$ = $1; }
+    | id_list ',' identifier { $$ = create_node("id_list", 2, $1, $3); }
     ;
 
-identifier_expr:
-    IDENTIFIER { $$ = create_node($1, 0); }
+identifier:
+    ID { $$ = create_node("identifier", 1, create_node($1, 0)); }
+    | ID '[' NUM ']' { $$ = create_node("array", 2, create_node("identifier", 1, create_node($1, 0)), create_node("array_index", 1, create_node($3, 0))); }
+    ;
+    
+function:
+    ID '(' parameter_list_opt ')' '{' statement_list '}' { $$ = create_node("function_definition", 3, create_node("function_name", 1, create_node($1, 0)), $3, $6); }
+    | ID '(' parameter_list_opt ')' ';' { $$ = create_node("function_declaration", 2, create_node("function_name", 1, create_node($1, 0)), $3); }
+    ;
+
+parameter_list_opt:
+    parameter_list { $$ = $1; }
+    | { $$ = create_node("parameter_list", 0); } //empty
+    ;
+
+parameter_list:
+    parameter { $$ = create_node("parameter_list", 1, $1); }
+    | parameter_list ',' parameter { $$ = create_node("parameter_list", 2, $1, $3); }
+    ;
+
+parameter:
+    type ID { $$ = create_node("parameter", 1, create_node("declaration", 2, $1, create_node("identifier", 1, create_node($2, 0)))); }
+    | expression { $$ = create_node("parameter", 1, $1); }
+    ;
+
+attribution:
+    identifier '=' expression { $$ = create_node("attribution", 2, $1, $3); }
+    | identifier ASSIGN_OP expression { $$ = create_node("assign_op", 3, $1, create_node($2, 0), $3); }
+    | identifier INC_DEC_OP { $$ = create_node("inc_dec_op", 2, $1, create_node($2, 0)); }
+    ;
+
+if_statement:
+    IF '(' comparison ')' '{' statement_list '}' else_if_opt { $$ = create_node("if_statement", 3, $3, $6, $8); }
+    ;
+
+else_if_opt:
+    ELSE '{' statement_list '}' { $$ = create_node("else_statement", 1, $3); }
+    | ELSE if_statement { $$ = $2; }
+    | { $$ = NULL; } // empty
+    ;
+
+comparison:
+    expression RELATIONAL_OP expression { $$ = create_node("relacional_op", 3, $1, create_node($2,0),$3); }
+    | comparison LOGICAL_OP comparison { $$ = create_node("logical_op", 3, $1, create_node($2, 0), $3); }  
+    | identifier { $$ = $1; }
+    | function { $$ = $1; }
+    /* TODO '(' comparison ')' */
+    ;
+
+loop_statement:
+    WHILE_LOOP '(' comparison ')' '{' statement_list '}' { $$ = create_node("loop_statement", 2, $3, $6); }
+    | DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';' { $$ = create_node("loop_statement", 2, $3, $7); }
+    | FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}' { $$ = create_node("loop_statement", 4, $3, $5, $7, $10); }
+    ;
+
+for_loop_initialization:
+    declaration { $$ = $1; }
+    | attribution { $$ = $1; }
+    ;
+return_statement:
+    RETURN expression ';' { $$ = create_node("return_statement", 1, $2); }
+    | RETURN ';' { $$ = create_node("return_statement", 0); }
     ;
 
 expression:
-    NUMBER { $$ = create_node($1, 0); }
+    NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
+    | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }     /* TODO: rever string como expression */
+    | identifier { $$ = $1; }
+    | expression '+' expression { $$ = create_node("add", 2, $1, $3); }
+    | expression '-' expression { $$ = create_node("subtract", 2, $1, $3); }
+    | expression '*' expression { $$ = create_node("multiply", 2, $1, $3); }
+    | expression '/' expression { $$ = create_node("divide", 2, $1, $3); }
+    | expression BITWISE_OP expression { $$ = create_node("bitwise_op", 3, $1, create_node($2, 0), $3); }
+    | identifier INC_DEC_OP { $$ = create_node("inc_dec_op", 2, $1, create_node($2, 0)); }
+    | PREPROCESSOR_OP expression { $$ = create_node("preprocessor_op", 2, create_node($1, 0), $2); }
+    | UNARY_OP expression { $$ = create_node("unary_op", 2, create_node($1, 0), $2); }
+    | expression TERNARY_OP expression ':' expression { $$ = create_node("ternary_op", 4, $1, create_node($2, 0), $3, $5); }
+    | '(' expression ')' { $$ = $2; }
+    | '{' expression_list '}' { $$ = create_node("expression_list", 1, $2); }  // {1, 2, 3, 4, 5}
+    | function { $$ = $1; }
     ;
 
-string_expr:
-    STRING_LITERAL { $$ = create_node($1, 0); }
+expression_list:
+    expression { $$ = create_node("expression_list", 1, $1); }
+    | expression_list ',' expression { $$ = create_node("expression_list", 2, $1, $3); }
     ;
-
 %%
-
 
 Node *create_node(char *label, int child_count, ...) {
     Node *node = malloc(sizeof(Node));
@@ -110,16 +206,12 @@ void print_tree(Node *node, int depth) {
 }
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Erro: %s\n", s);
+    fprintf(stderr, "Erro de sintaxe: %s\n", s);
 }
 
 int main() {
     if (yyparse() == 0) {
-        printf("Parse successful!\n");
         print_tree(root, 0);
-
-    } else {
-        printf("Parse failed!\n");
     }
     return 0;
 }

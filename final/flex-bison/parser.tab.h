@@ -54,12 +54,24 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NUMBER = 258,                  /* NUMBER  */
-    KEYWORD = 259,                 /* KEYWORD  */
-    IDENTIFIER = 260,              /* IDENTIFIER  */
-    STRING_LITERAL = 261,          /* STRING_LITERAL  */
-    OPERATOR = 262,                /* OPERATOR  */
-    COMPARE = 263                  /* COMPARE  */
+    ID = 258,                      /* ID  */
+    NUM = 259,                     /* NUM  */
+    RELATIONAL_OP = 260,           /* RELATIONAL_OP  */
+    TYPE = 261,                    /* TYPE  */
+    STRING_LITERAL = 262,          /* STRING_LITERAL  */
+    IF = 263,                      /* IF  */
+    ELSE = 264,                    /* ELSE  */
+    RETURN = 265,                  /* RETURN  */
+    LOGICAL_OP = 266,              /* LOGICAL_OP  */
+    BITWISE_OP = 267,              /* BITWISE_OP  */
+    ASSIGN_OP = 268,               /* ASSIGN_OP  */
+    INC_DEC_OP = 269,              /* INC_DEC_OP  */
+    PREPROCESSOR_OP = 270,         /* PREPROCESSOR_OP  */
+    UNARY_OP = 271,                /* UNARY_OP  */
+    TERNARY_OP = 272,              /* TERNARY_OP  */
+    DO_LOOP = 273,                 /* DO_LOOP  */
+    WHILE_LOOP = 274,              /* WHILE_LOOP  */
+    FOR_LOOP = 275                 /* FOR_LOOP  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -68,14 +80,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 15 "parser.y"
+#line 14 "parser.y"
 
     char* num;
-    char *string;
-    char *id;
+    char *str;
     Node *node;
 
-#line 79 "parser.tab.h"
+#line 90 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
