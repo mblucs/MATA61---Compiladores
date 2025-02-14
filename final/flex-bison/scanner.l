@@ -17,14 +17,12 @@ BEGIN_BLOCK_COMMENT    "/*"
 END_BLOCK_COMMENT      "*/"
 BLOCK_COMMENT_BODY     [^*\/]+
 
-KEYWORD                "alignas"|"alignof"|"auto"|"break"|"case"|"constexpr"|"continue"|"default"|"do"|"extern"|"false"|"for"|"goto"|"inline"|"nullptr"|"register"|"restrict"|"short"|"signed"|"sizeof"|"static"|"static_assert"|"struct"|"switch"|"thread_local"|"true"|"typedef"|"typeof"|"typeof_unqual"|"union"|"unsigned"|"volatile"|"_Atomic"|"_BitInt"|"_Complex"|"_Decimal128"|"_Decimal32"|"_Decimal64"|"_Generic"|"_Lengthof"|"_Noreturn"
 TYPE                   "int"|"float"|"long"|"bool"|"char"|"const"|"double"|"enum"|"void"
 IDENTIFIER              [a-zA-Z_][a-zA-Z0-9_]*
 
 CONSTANT                [0-9]+(\.[0-9]*)?
 STRING_LITERAL          [^"]*\"
 
- /* |"->"|"?"|": :"|"..."|"#" */
 OPERATOR               "+"|"-"|"*"|"/"|"%"|"="|","|";"|":"|"."|"["|"]"|"{"|"}"|"("|")"
 RELATIONAL_OP           ">"|"<"|"<>"|"=="|">="|"<="|"!="
 LOGICAL_OP             "&&"|"||"
