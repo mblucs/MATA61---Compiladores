@@ -35,7 +35,7 @@ int main(){
     inteiro = 5;
     vetorInteiros[1] = inteiro * 2;
     vetorInteiros[0] = vetorInteiros[0];
-    // vetorInteiros[2] = soma(inteiro, vetorInteiros[3]); //TODO: attribution: identifier '=' expression | expression = function
+    // vetorInteiros[2] = soma(inteiro, vetorInteiros[3]); 
 
     // flutuante += 0.2;
     vetorFlutuantes[1] = flutuante / 4;
@@ -76,7 +76,7 @@ int main(){
 
     for (int i = 0 ; i < 5 ; i++) {
         printf(i);
-        //TODO: printf("vetorInteiros[%d] = %d\n", i, vetorInteiros[i]);
+        // printf("vetorInteiros[%d] = %d\n", i, vetorInteiros[i]);
     }
 
     

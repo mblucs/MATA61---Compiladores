@@ -134,7 +134,6 @@ comparison:
     | comparison LOGICAL_OP comparison { $$ = create_node("logical_op", 3, $1, create_node($2, 0), $3); }  
     | identifier { $$ = $1; }
     | function { $$ = $1; }
-    /* TODO '(' comparison ')' */
     ;
 
 loop_statement:
@@ -154,7 +153,7 @@ return_statement:
 
 expression:
     NUM { $$ = create_node("literal_value", 1, create_node($1, 0)); }
-    | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); }     /* TODO: rever string como expression */
+    | STRING_LITERAL { $$ = create_node("string_literal", 1, create_node($1, 0)); } 
     | identifier { $$ = $1; }
     | expression '+' expression { $$ = create_node("add", 2, $1, $3); }
     | expression '-' expression { $$ = create_node("subtract", 2, $1, $3); }
