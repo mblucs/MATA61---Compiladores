@@ -20,6 +20,7 @@ void yyerror(const char *s);
 %token <str> ID NUM RELATIONAL_OP TYPE STRING_LITERAL
 %token IF ELSE WHILE RETURN
 %token <str> LOGICAL_OP BITWISE_OP ASSIGN_OP INC_DEC_OP PREPROCESSOR_OP UNARY_OP TERNARY_OP
+%token DO_LOOP WHILE_LOOP FOR_LOOP 
 
 %left '+' '-'
 %left '*' '/'
@@ -43,7 +44,9 @@ void yyerror(const char *s);
 %type <node> parameter_list_opt parameter_list parameter 
 %type <node> expression_list expression
 
-%type <node> type comparison
+%type <node> type comparison 
+
+%type <node> for_loop_initialization
 
 
 %start program
@@ -61,7 +64,8 @@ statement_list:
 
 statement:
     declaration { $$ = create_node("statement", 1, $1); }
-    | attribution { $$ = create_node("statement", 1, $1); }
+    | declaration ';' { $$ = create_node("statement", 1, $1); }
+    | attribution ';' { $$ = create_node("statement", 1, $1); }
     | if_statement { $$ = create_node("statement", 1, $1); }
     | loop_statement { $$ = create_node("statement", 1, $1); }
     | return_statement { $$ = create_node("statement", 1, $1); }
@@ -109,13 +113,14 @@ parameter:
     ;
 
 attribution:
-    identifier '=' expression ';' { $$ = create_node("attribution", 2, $1, $3); }
+    identifier '=' expression { $$ = create_node("attribution", 2, $1, $3); }
     | identifier ASSIGN_OP expression { $$ = create_node("assign_op", 3, $1, create_node($2, 0), $3); }
     | identifier INC_DEC_OP { $$ = create_node("inc_dec_op", 2, $1, create_node($2, 0)); }
     ;
 
 if_statement:
     IF '(' comparison ')' '{' statement_list '}' { $$ = create_node("if_statement", 2, $3, $6); }
+    /* | IF '(' comparison ')' '{' statement_list '}' if_statement { $$ = create_node("if_statement", 3, $3, $6, $8); } */
     | IF '(' comparison ')' '{' statement_list '}' ELSE '{' statement_list '}' { $$ = create_node("if_statement", 3, $3, $6, $10); }
     | IF '(' comparison ')' '{' statement_list '}' ELSE if_statement { $$ = create_node("if_statement", 3, $3, $6, $9); }
     ;
@@ -125,11 +130,19 @@ comparison:
     | comparison LOGICAL_OP comparison { $$ = create_node("logical_op", 3, $1, create_node($2, 0), $3); }  
     | identifier { $$ = $1; }
     | function { $$ = $1; }
+    /* TODO '(' comparison ')' */
 
 loop_statement:
-    WHILE '(' comparison ')' '{' statement_list '}' { $$ = create_node("loop_statement", 2, $3, $6); }
+    WHILE_LOOP '(' comparison ')' '{' statement_list '}' { $$ = create_node("loop_statement", 2, $3, $6); }
+    | DO_LOOP '{' statement_list '}' WHILE_LOOP '(' comparison ')' ';' { $$ = create_node("loop_statement", 2, $3, $7); }
+    /* | FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' { $$ = create_node("loop_statement", 3, $3, $5, $7); } */
+    | FOR_LOOP '(' for_loop_initialization ';' comparison ';' for_loop_initialization ')' '{' statement_list '}' { $$ = create_node("loop_statement", 4, $3, $5, $7, $10); }
     ;
 
+for_loop_initialization:
+    declaration { $$ = $1; }
+    | attribution { $$ = $1; }
+    ;
 return_statement:
     RETURN expression ';' { $$ = create_node("return_statement", 1, $2); }
     | RETURN ';' { $$ = create_node("return_statement", 0); }

@@ -69,7 +69,10 @@ extern int yydebug;
     INC_DEC_OP = 270,              /* INC_DEC_OP  */
     PREPROCESSOR_OP = 271,         /* PREPROCESSOR_OP  */
     UNARY_OP = 272,                /* UNARY_OP  */
-    TERNARY_OP = 273               /* TERNARY_OP  */
+    TERNARY_OP = 273,              /* TERNARY_OP  */
+    DO_LOOP = 274,                 /* DO_LOOP  */
+    WHILE_LOOP = 275,              /* WHILE_LOOP  */
+    FOR_LOOP = 276                 /* FOR_LOOP  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -84,7 +87,7 @@ union YYSTYPE
     char *str;
     Node *node;
 
-#line 88 "parser.tab.h"
+#line 91 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

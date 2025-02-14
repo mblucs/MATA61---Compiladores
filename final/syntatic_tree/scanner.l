@@ -38,8 +38,10 @@ TERNARY_OP             "\?"
 %%
 "if"                { return IF; }
 "else"              { return ELSE; }
-"while"             { return WHILE; }
 "return"            { return RETURN; }
+"while"             { return WHILE_LOOP; }
+"for"               { return FOR_LOOP; }
+"do"                { return DO_LOOP; }
 {TYPE}              { yylval.str = strdup(yytext); return TYPE; }
 {IDENTIFIER}        { yylval.str = strdup(yytext); return ID; }
 

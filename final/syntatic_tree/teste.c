@@ -62,7 +62,7 @@ int main(){
     if (flutuante > 15.0 && flutuante < 30.0) {
         printf("O valor de 'flutuante' está entre 15.0 e 30.0.\n");
     } 
-    
+
     // Condicional composta
     if (inteiro > 10) {
         printf("O valor de 'inteiro' é maior que 10.\n");
@@ -70,6 +70,16 @@ int main(){
         printf("O valor de 'inteiro' é menor que 10.\n");
     } else {
         printf("O valor de 'inteiro' é igual a 10.\n");
+    }
+
+    printf("\n");
+
+    // Comandos de repetição
+    printf("Repetição usando FOR:\n");
+
+    for (int i = 0 ; i < 5 ; i++) {
+        printf(i);
+        //TODO: printf("vetorInteiros[%d] = %d\n", i, vetorInteiros[i]);
     }
 
     
